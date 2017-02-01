@@ -1,0 +1,6 @@
+[submodule "src/External/VTK"]
+	path = src/External/VTK
+	url = https://github.com/Kitware/VTK.git
+[submodule "src/External/googletest"]
+	path = src/External/googletest
+	url = https://github.com/google/googletest.git

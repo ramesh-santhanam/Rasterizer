@@ -1,0 +1,1 @@
+ cmake -DVTK_Group_StandAlone:Bool=OFF -DVTK_Group_Rendering:BOOL=OFF -DBUILD_TESTING:BOOL=OFF -DVTK_WITHOUT_QT:BOOL=ON -DModule_vtkCommonDataModel:BOOL=ON -DModule_vtkFiltersGeometry:BOOL=ON  ..

@@ -1,0 +1,7 @@
+cmake_minimum_required(VERSION 3.2.2 FATAL_ERROR)
+project(rasterizer)
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(SDK_VTK_BIN ${CMAKE_SOURCE_DIR}/build/src/External/VTK)
+set(SDK_VTK_SRC ${CMAKE_SOURCE_DIR}/build/src/External/VTK)
+add_subdirectory("src")
