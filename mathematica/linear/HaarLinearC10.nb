@@ -1,0 +1,30 @@
+Notebook[{Cell[
+CellGroupData[{Cell[
+BoxData[{RowBox[{"x","[","t_","]"," ",":="," ","x0"," ","+"," ","(","x1","-","x0",")","t"}],"\n",RowBox[
+{"y","[","t_","]"," ",":="," ","y0"," ","+"," ","(","y1","-","y0",")","t"}],"\n",RowBox[
+{"f"," ","="," ","{","x","[","t","]",",","0","}"}],"\n",RowBox[{"g"," ","="," ","{","D","[","y","[","t","]",",","t","]",","," ","-","D","[","x","[","t","]",",","t","]","}"}],"\n",RowBox[
+{"Simplify","[","1","/","4","Integrate","[","f",".","g",","," ","{","t",",","0",",","1","}","]","]"}]}],
+"Input",CellID->1,CellLabel->"In[104]:= "],Cell[
+BoxData[RowBox[{"{",RowBox[{RowBox[
+{"x0","+",RowBox[{"t"," ",RowBox[{"(",RowBox[{RowBox[{"-","x0"}],"+","x1"}],")"}]}]}],",","0"}],"}"}],
+StandardForm],"Output",CellID->16,CellLabel->"Out[106]= "],Cell[
+BoxData[RowBox[{"{",RowBox[
+{RowBox[{RowBox[{"-","y0"}],"+","y1"}],",",RowBox[{"x0","-","x1"}]}],"}"}],StandardForm],
+"Output",CellID->18,CellLabel->"Out[107]= "],Cell[
+BoxData[RowBox[{RowBox[{"-",FractionBox[
+"1","8"]}]," ",RowBox[{"(",RowBox[{"x0","+","x1"}],")"}]," ",RowBox[{"(",RowBox[{"y0","-","y1"}],")"}]}],
+StandardForm],"Output",CellID->19,CellLabel->"Out[108]= "]},Open]],Cell[
+TextData[
+{"Quadrant"," ","1",StyleBox[RowBox[{","," "}]],"3"}],"Text",CellID->39],Cell[
+CellGroupData[
+{Cell[
+BoxData[{RowBox[{"h"," ","="," ","{","1","-","x","[","t","]",","," ","0","}"}],"\n",RowBox[
+{"Simplify","["," ","1","/","4"," ","Integrate","[","h",".","g",",","{","t",",","0",",","1","}","]","]"}]}],
+"Input",CellID->23,CellLabel->"In[111]:= "],Cell[
+BoxData[RowBox[{"{",RowBox[{RowBox[
+{"1","-","x0","-",RowBox[{"t"," ",RowBox[{"(",RowBox[{RowBox[{"-","x0"}],"+","x1"}],")"}]}]}],",","0"}],"}"}],
+StandardForm],"Output",CellID->32,CellLabel->"Out[111]= "],Cell[
+BoxData[RowBox[{FractionBox[
+"1","8"]," ",RowBox[{"(",RowBox[{RowBox[{"-","2"}],"+","x0","+","x1"}],")"}]," ",RowBox[
+{"(",RowBox[{"y0","-","y1"}],")"}]}],StandardForm],"Output",CellID->34,CellLabel->"Out[112]= "]},
+Open]]},StyleDefinitions->"Default.nb",FrontEndVersion->"10.0 for Wolfram Cloud Platform (June 2 2014)"]

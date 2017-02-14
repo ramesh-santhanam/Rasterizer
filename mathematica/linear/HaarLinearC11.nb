@@ -1,0 +1,28 @@
+Notebook[{Cell[
+CellGroupData[{Cell[
+BoxData[{RowBox[{"x","[","t_","]"," ",":="," ","x0"," ","+"," ","(","x1","-","x0",")","t"}],"\n",RowBox[
+{"y","[","t_","]"," ",":="," ","y0"," ","+"," ","(","y1","-","y0",")","t"}],"\n",RowBox[
+{"q0"," ","="," ","{","x","[","t","]",",","0","}"}],"\n",RowBox[{"q1"," ","="," ","{","1","-","x","[","t","]",","," ","0","}"}],"\n",RowBox[
+{"q2"," ","="," ","{","-","x","[","t","]",","," ","0","}"}],"\n",RowBox[{"q3"," ","="," ","{","-","1"," ","+"," ","x","[","t","]",","," ","0","}"}],"\n",RowBox[
+{"g"," ","="," ","{","D","[","y","[","t","]",",","t","]",","," ","-","D","[","x","[","t","]",",","t","]","}"}],"\n","\n",RowBox[
+{"Simplify","[","1","/","4"," ","Integrate","[","q0",".","g",",","{","t",",","0",",","1","}","]","]"}]}],
+"Input",CellID->1,CellLabel->"In[145]:= "],Cell[
+BoxData[RowBox[{RowBox[{"-",FractionBox[
+"1","8"]}]," ",RowBox[{"(",RowBox[{"x0","+","x1"}],")"}]," ",RowBox[{"(",RowBox[{"y0","-","y1"}],")"}]}],
+StandardForm],"Output",CellID->42,CellLabel->"Out[152]= "]},Open]],Cell[
+CellGroupData[
+{Cell[
+BoxData[{RowBox[{"Simplify","[","1","/","4"," ","Integrate","[","q1",".","g",","," ","{","t",","," ","0",",","1","}","]","]"}],"\n",RowBox[
+{"Simplify","[","1","/","4"," ","Integrate","[","q2",".","g",","," ","{","t",","," ","0",","," ","1","}","]","]"}],"\n",RowBox[
+{"Simplify","[","1","/","4"," ","Integrate","[","q3",".","g",","," ","{","t",","," ","0",",","1","}","]","]","\n","\n"}]}],
+"Input",CellID->23,CellLabel->"In[142]:= "],Cell[
+BoxData[RowBox[{FractionBox["1",
+"8"]," ",RowBox[{"(",RowBox[{RowBox[{"-","2"}],"+","x0","+","x1"}],")"}]," ",RowBox[
+{"(",RowBox[{"y0","-","y1"}],")"}]}],StandardForm],"Output",CellID->29,CellLabel->"Out[142]= "],Cell[
+BoxData[
+RowBox[{FractionBox["1","8"]," ",RowBox[{"(",RowBox[{"x0","+","x1"}],")"}]," ",RowBox[
+{"(",RowBox[{"y0","-","y1"}],")"}]}],StandardForm],"Output",CellID->31,CellLabel->"Out[143]= "],Cell[
+BoxData[
+RowBox[{RowBox[{"-",FractionBox["1","8"]}]," ",RowBox[{"(",RowBox[{RowBox[{"-","2"}],"+","x0","+","x1"}],")"}]," ",RowBox[
+{"(",RowBox[{"y0","-","y1"}],")"}]}],StandardForm],"Output",CellID->32,CellLabel->"Out[144]= "]},
+Open]]},StyleDefinitions->"Default.nb",FrontEndVersion->"10.0 for Wolfram Cloud Platform (June 2 2014)"]
