@@ -1,0 +1,25 @@
+Notebook[{Cell[
+CellGroupData[{Cell[
+BoxData[{RowBox[{"x","[","t_","]"," ",":="," ","x0"," ","(","1","-","t",")","^","2"," ","+"," ","x1"," ","*"," ","2","*","t","*","(","1","-","t",")"," ","+"," ","x2","*"," ","t","^","2"}],"\n",RowBox[
+{"y","[","t_","]"," ",":="," ","y0"," ","(","1","-","t",")","^","2"," ","+"," ","y1"," ","*"," ","2"," ","*","t","*","(","1","-","t",")"," ","+"," ","y2","*"," ","t","^","2"}],"\n","\n",RowBox[
+{"f"," ","="," ","{","x","[","t","]",",","y","[","t","]","}"}],"\n",RowBox[{"g"," ","="," ","{","D","[","y","[","t","]",",","t","]",","," ","-","D","[","x","[","t","]",",","t","]","}"}],"\n","\n",RowBox[
+{"Simplify","["," ","1","/","2"," ","*"," ","Integrate","[","f",".","g",",","{","t",",","0",",","1","}","]","]"}]}],
+"Input",CellID->1,CellLabel->"In[8]:= "],Cell[
+BoxData[RowBox[{"{",RowBox[{RowBox[
+{RowBox[{SuperscriptBox[RowBox[{"(",RowBox[{"1","-","t"}],")"}],"2"]," ","x0"}],"+",RowBox[
+{"2"," ",RowBox[{"(",RowBox[{"1","-","t"}],")"}]," ","t"," ","x1"}],"+",RowBox[{SuperscriptBox[
+"t","2"]," ","x2"}]}],",",RowBox[{RowBox[{SuperscriptBox[RowBox[{"(",RowBox[{"1","-","t"}],")"}],
+"2"]," ","y0"}],"+",RowBox[{"2"," ",RowBox[{"(",RowBox[{"1","-","t"}],")"}]," ","t"," ","y1"}],"+",RowBox[
+{SuperscriptBox["t","2"]," ","y2"}]}]}],"}"}],StandardForm],"Output",CellID->3,CellLabel->"Out[10]= "],Cell[
+BoxData[
+RowBox[{"{",RowBox[{RowBox[{RowBox[{RowBox[{"-","2"}]," ",RowBox[{"(",RowBox[{"1","-","t"}],")"}]," ","y0"}],"+",RowBox[
+{"2"," ",RowBox[{"(",RowBox[{"1","-","t"}],")"}]," ","y1"}],"-",RowBox[{"2"," ","t"," ","y1"}],"+",RowBox[
+{"2"," ","t"," ","y2"}]}],",",RowBox[{RowBox[{"2"," ",RowBox[{"(",RowBox[{"1","-","t"}],")"}]," ","x0"}],"-",RowBox[
+{"2"," ",RowBox[{"(",RowBox[{"1","-","t"}],")"}]," ","x1"}],"+",RowBox[{"2"," ","t"," ","x1"}],"-",RowBox[
+{"2"," ","t"," ","x2"}]}]}],"}"}],StandardForm],"Output",CellID->6,CellLabel->"Out[11]= "],Cell[
+BoxData[
+RowBox[{FractionBox["1","6"]," ",RowBox[{"(",RowBox[{RowBox[{RowBox[{"-","x2"}]," ",RowBox[
+{"(",RowBox[{"y0","+",RowBox[{"2"," ","y1"}]}],")"}]}],"-",RowBox[{"2"," ","x1"," ",RowBox[
+{"(",RowBox[{"y0","-","y2"}],")"}]}],"+",RowBox[{"x0"," ",RowBox[{"(",RowBox[{RowBox[
+{"2"," ","y1"}],"+","y2"}],")"}]}]}],")"}]}],StandardForm],"Output",CellID->7,CellLabel->"Out[12]= "]},
+Open]]},StyleDefinitions->"Default.nb",FrontEndVersion->"10.0 for Wolfram Cloud Platform (June 2 2014)"]
