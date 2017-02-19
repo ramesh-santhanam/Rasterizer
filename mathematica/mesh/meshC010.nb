@@ -1,0 +1,50 @@
+Notebook[{Cell[
+CellGroupData[{Cell[
+BoxData[{RowBox[{"x","[","u_",",","v_","]"," ",":="," ","x0"," ","(","1","-"," ","u"," ","-","v"," ",")"," ","+",StyleBox[
+RowBox[{" "," "}]],"x1"," ","u"," ","+",StyleBox[RowBox[{" "," "}]],"x2"," ","v"}],"\n",RowBox[
+{"y","[","u_",",","v_","]"," ",":="," ","y0"," ","(","1","-"," ","u"," ","-","v"," ",")"," ","+",StyleBox[
+RowBox[{" "," "}]],"y1"," ","u"," ","+",StyleBox[RowBox[{" "," "}]],"y2"," ","v"}],"\n",RowBox[
+{"z","[","u_",",","v_","]"," ",":="," ","z0"," ","(","1","-"," ","u"," ","-","v"," ",")"," ","+",StyleBox[
+RowBox[{" "," "}]],"z1"," ","u"," ","+",StyleBox[RowBox[{" "," "}]],"z2"," ","v"}],"\n",RowBox[
+{"s","[","u_",",","v_","]"," ","="," ","{","x","[","u",",","v","]",","," ","y","[","u",",","v","]",","," ","z","[","u",",","v","]","}"}],"\n",RowBox[
+{"n","[","u",",","v","]"," ","="," ","Cross","[","D","[","s","[","u",",","v","]",",","u","]",",","D","[","s","[","u",",","v","]",",","v","]","]"}],"\n",RowBox[
+{StyleBox[RowBox[{"(*"," ","Quadrant"," ","0,"," ","2"," ","*)"}]]}],"\n",RowBox[
+{"sy","[","u_",","," ","v_","]"," ","="," ","{","0",",","y","[","u",",","v","]",","," ","0","}"}],"\n",RowBox[
+{"1","/","8","Integrate","[","Dot","[","sy","[","u",",","v","]",",","n","[","u",",","v","]","]",",","{","u",","," ","0",",","1","}",",","{","v",",","0",",","1","-","u","}","]"}],"\n",RowBox[
+{StyleBox[RowBox[{"(*"," ","quadrant"," ","1,"," ","3"," ","*)"}]]}],"\n",RowBox[
+{"syy","[","u_",",","v_","]"," ","="," ","{","0",",","1","-","y","[","u",",","v","]",","," ","0","}"}],"\n",RowBox[
+{"1","/","8","Integrate","[","Dot","[","syy","[","u",",","v","]",",","n","[","u",",","v","]","]",",","{","u",","," ","0",",","1","}",",","{","v",",","0",",","1","-","u","}","]","\n"}]}],
+"Input",CellID->1,CellLabel->"In[239]:= "],Cell[
+BoxData[RowBox[{"{",RowBox[{RowBox[
+{RowBox[{RowBox[{"(",RowBox[{"1","-","u","-","v"}],")"}]," ","x0"}],"+",RowBox[{"u"," ","x1"}],"+",RowBox[
+{"v"," ","x2"}]}],",",RowBox[{RowBox[{RowBox[{"(",RowBox[{"1","-","u","-","v"}],")"}]," ","y0"}],"+",RowBox[
+{"u"," ","y1"}],"+",RowBox[{"v"," ","y2"}]}],",",RowBox[{RowBox[{RowBox[{"(",RowBox[
+{"1","-","u","-","v"}],")"}]," ","z0"}],"+",RowBox[{"u"," ","z1"}],"+",RowBox[{"v"," ","z2"}]}]}],"}"}],
+StandardForm],"Output",CellID->39,CellLabel->"Out[242]= "],Cell[
+BoxData[RowBox[{"{",RowBox[
+{RowBox[{RowBox[{RowBox[{"-","y1"}]," ","z0"}],"+",RowBox[{"y2"," ","z0"}],"+",RowBox[
+{"y0"," ","z1"}],"-",RowBox[{"y2"," ","z1"}],"-",RowBox[{"y0"," ","z2"}],"+",RowBox[
+{"y1"," ","z2"}]}],",",RowBox[{RowBox[{"x1"," ","z0"}],"-",RowBox[{"x2"," ","z0"}],"-",RowBox[
+{"x0"," ","z1"}],"+",RowBox[{"x2"," ","z1"}],"+",RowBox[{"x0"," ","z2"}],"-",RowBox[
+{"x1"," ","z2"}]}],",",RowBox[{RowBox[{RowBox[{"-","x1"}]," ","y0"}],"+",RowBox[{"x2"," ","y0"}],"+",RowBox[
+{"x0"," ","y1"}],"-",RowBox[{"x2"," ","y1"}],"-",RowBox[{"x0"," ","y2"}],"+",RowBox[
+{"x1"," ","y2"}]}]}],"}"}],StandardForm],"Output",CellID->41,CellLabel->"Out[243]= "],Cell[
+BoxData[
+RowBox[{"{",RowBox[{"0",",",RowBox[{RowBox[{RowBox[{"(",RowBox[{"1","-","u","-","v"}],")"}]," ","y0"}],"+",RowBox[
+{"u"," ","y1"}],"+",RowBox[{"v"," ","y2"}]}],",","0"}],"}"}],StandardForm],"Output",
+CellID->42,CellLabel->"Out[244]= "],Cell[
+BoxData[RowBox[{FractionBox["1","48"]," ",RowBox[
+{"(",RowBox[{"y0","+","y1","+","y2"}],")"}]," ",RowBox[{"(",RowBox[{RowBox[{"x2"," ",RowBox[
+{"(",RowBox[{RowBox[{"-","z0"}],"+","z1"}],")"}]}],"+",RowBox[{"x1"," ",RowBox[{"(",RowBox[
+{"z0","-","z2"}],")"}]}],"+",RowBox[{"x0"," ",RowBox[{"(",RowBox[{RowBox[{"-","z1"}],"+","z2"}],")"}]}]}],")"}]}],
+StandardForm],"Output",CellID->43,CellLabel->"Out[245]= "],Cell[
+BoxData[RowBox[{"{",RowBox[
+{"0",",",RowBox[{"1","-",RowBox[{RowBox[{"(",RowBox[{"1","-","u","-","v"}],")"}]," ","y0"}],"-",RowBox[
+{"u"," ","y1"}],"-",RowBox[{"v"," ","y2"}]}],",","0"}],"}"}],StandardForm],"Output",
+CellID->44,CellLabel->"Out[246]= "],Cell[
+BoxData[RowBox[{FractionBox["1","48"]," ",RowBox[
+{"(",RowBox[{RowBox[{"-","3"}],"+","y0","+","y1","+","y2"}],")"}]," ",RowBox[{"(",RowBox[
+{RowBox[{"x2"," ",RowBox[{"(",RowBox[{"z0","-","z1"}],")"}]}],"+",RowBox[{"x0"," ",RowBox[
+{"(",RowBox[{"z1","-","z2"}],")"}]}],"+",RowBox[{"x1"," ",RowBox[{"(",RowBox[{RowBox[
+{"-","z0"}],"+","z2"}],")"}]}]}],")"}]}],StandardForm],"Output",CellID->45,CellLabel->"Out[247]= "]},
+Open]]},StyleDefinitions->"Default.nb",FrontEndVersion->"10.0 for Wolfram Cloud Platform (June 2 2014)"]
