@@ -48,13 +48,13 @@ Rasterer2d::rasterize(double x0, double y0, double x1, double y1)
 	if( m_depth > 0 ) {
 		if( !m_root  ) {
 			m_root = m_qtree.newQuad(nullptr);
-			cout << "allocated root: %p " << m_root << "\n";
+			//cout << "allocated root: %p " << m_root << "\n";
 		}
 		assert(m_root);
 		QuadNode* r = m_root;
-		cout << "root: %p " << r << "\n";
+		//cout << "root: %p " << r << "\n";
 
-		cout << "x0: " << x0 << ":y0:" << y0 << ":x1:" << x1 << ":y1:" << y1 << "\n";
+		//cout << "x0: " << x0 << ":y0:" << y0 << ":x1:" << x1 << ":y1:" << y1 << "\n";
 		_rasterize( r, x0, y0, x1, y1, level );	
 	}
 }
