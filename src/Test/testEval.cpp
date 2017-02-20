@@ -212,6 +212,84 @@ TEST(HaarLinearTest, Quad01) {
 #endif
 }
 
+TEST(HaarLinearTest, Quad13) {
+
+	float cval[3];
+	double px, py;
+	double qx, qy;
+	float v[4];
+
+	// Q1 - Q3
+    cval[0] = 0.; cval[1] = 0.; cval[2] = 0.;
+    v[0] = 0.0; v[1] = 0.0;
+    v[2] = 0.5; v[3] = 1.0 ;
+    calc_coeffs_line(cval, v, 1, 0 );
+    v[0] = 0.5; v[1] = 0.0;
+    v[2] = 0.8; v[3] = 0.6 ;
+    calc_coeffs_line(cval, v, 1, 1 );
+
+    px = 0.5; py = 0.0;
+    qx = 0.9; qy = 0.8;
+    Rasterer2d rast(1);
+    rast.rasterize(px, py, qx, qy);
+    assert(rast.m_root);
+
+	EXPECT_FLOAT_EQ(rast.m_root->m_haar[0], cval[0]);
+	EXPECT_FLOAT_EQ(rast.m_root->m_haar[1], cval[1]);
+	EXPECT_FLOAT_EQ(rast.m_root->m_haar[2], cval[2]);
+}
+
+TEST(HaarLinearTest, Quad23) {
+
+	float cval[3];
+	double px, py;
+	double qx, qy;
+	float v[4];
+
+    cval[0] = 0.; cval[1] = 0.; cval[2] = 0.;
+    v[0] = 0.0; v[1] = 0.0;
+    v[2] = 1.0; v[3] = 0.5 ;
+    calc_coeffs_line(cval, v, 0, 1 );
+    v[0] = 0.0; v[1] = 0.5;
+    v[2] = 0.5; v[3] = 0.75 ;
+    calc_coeffs_line(cval, v, 1, 1 );
+
+    px = 0.0; py = 0.5;
+    qx = 0.75; qy = 0.875;
+    Rasterer2d rast(1);
+    rast.rasterize(px, py, qx, qy);
+    assert(rast.m_root);
+
+	EXPECT_FLOAT_EQ(rast.m_root->m_haar[0], cval[0]);
+	EXPECT_FLOAT_EQ(rast.m_root->m_haar[1], cval[1]);
+	EXPECT_FLOAT_EQ(rast.m_root->m_haar[2], cval[2]);
+}
+
+TEST(HaarLinearTest, Quad02) {
+
+	float cval[3];
+	double px, py;
+	double qx, qy;
+	float v[4];
+
+    cval[0] = 0.; cval[1] = 0.; cval[2] = 0.;
+    v[0] = 0.0; v[1] = 0.0;
+    v[2] = 0.5; v[3] = 1.0 ;
+    calc_coeffs_line(cval, v, 0, 0 );
+    v[0] = 0.5; v[1] = 0.0;
+    v[2] = 0.8; v[3] = 0.6 ;
+    calc_coeffs_line(cval, v, 0, 1 );
+
+    px = 0.0; py = 0.0;
+    qx = 0.4; qy = 0.8;
+    Rasterer2d rast(1);
+    rast.rasterize(px, py, qx, qy);
+    assert(rast.m_root);
+
+	EXPECT_FLOAT_EQ(rast.m_root->m_haar[0], cval[0]);
+	EXPECT_FLOAT_EQ(rast.m_root->m_haar[1], cval[1]);
+	EXPECT_FLOAT_EQ(rast.m_root->m_haar[2], cval[2]);
+}
 
 int main(int argc, char **argv ) {
 ::testing::InitGoogleTest(&argc, argv);
