@@ -291,6 +291,22 @@ TEST(HaarLinearTest, Quad02) {
 	EXPECT_FLOAT_EQ(rast.m_root->m_haar[2], cval[2]);
 }
 
+TEST(RasterizeTest, square) {
+
+	float x[4];
+	float y[4];
+	
+	x[0] = y[0] = 0.;
+	x[1] = 0.0; y[1] = 0.;
+	x[2] = 1.0; y[2] = 1.;
+	x[3] = 0.0; y[3] = 1.;
+
+    Rasterer2d rast(4);
+	for( int i = 0; i < 4; i++ ) {
+   		rast.rasterize(x[i], y[i], x[(i+1)%4], y[(i+1)%4]);
+	}
+}
+
 int main(int argc, char **argv ) {
 ::testing::InitGoogleTest(&argc, argv);
 	return RUN_ALL_TESTS();
