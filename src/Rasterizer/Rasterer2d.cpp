@@ -318,7 +318,7 @@ void
 Rasterer2d::writeImage( std::vector<std::vector<double>>& img,
 						int offset_x, int offset_y, 
 						int img_size,
-                        QuadNode* node,
+                        const QuadNode* node,
 						double val )
 {
 	double node_value[4];
@@ -334,6 +334,19 @@ Rasterer2d::writeImage( std::vector<std::vector<double>>& img,
 		int ox = offset_x + sx;
 		int sy = (q & 0x02) ? 0.5*img_size : 0;
 		int oy = offset_y + sy;
+
+		const QuadNode* qc = node->getSubQuad(q);	
+		if( ! qc  ) {
+			// parent has edge - no child because leaf.
+			if( node->subQuadEdge(q) ) {
+
+			}
+			// commit value.
+			if( val > 0.5 ) {
+
+			}
+		}
+
 	}
 }
 

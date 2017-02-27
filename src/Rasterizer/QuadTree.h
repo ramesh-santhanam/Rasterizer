@@ -111,9 +111,10 @@ class QuadNode {
 		void setLeaf(bool);
 		void setSubQuad(int, QuadNode*);		
 		QuadNode* getSubQuad(int);
+		const QuadNode* getSubQuad(int) const;
 	
 		void setSubQuadEdge(int);
-		bool subQuadEdge(int);	
+		bool subQuadEdge(int) const;	
 
 		QuadNode* getParent();
 		bool isLeaf() const;
@@ -124,7 +125,7 @@ class QuadNode {
 
 		QuadNode*	m_quads[4];
 		QuadNode*	m_parent;
-		int		m_hasEdge;
+		int			m_hasEdge;
 		bool		m_leaf;
 };
 

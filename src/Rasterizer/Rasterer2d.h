@@ -25,7 +25,8 @@ class Rasterer2d {
 		void writeImage( std::vector<std::vector<double>>& img,
 						 int offset_x, int offset_y,
 						 int size,
-						 QuadNode* node, double val );
+						 const QuadNode* node,
+						 double val );
 
 		void _rasterize(QuadNode* node, double x0, double y0, 
 						double x1, double y1, int level);

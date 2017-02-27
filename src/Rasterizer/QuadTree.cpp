@@ -93,6 +93,13 @@ QuadNode::getSubQuad(int q)
 	return m_quads[q];
 }
 
+const QuadNode*
+QuadNode::getSubQuad(int q) const
+{
+	assert(q >=0 && q < 4);
+	return m_quads[q];
+}
+
 QuadNode*
 QuadNode::getParent()
 {
@@ -121,7 +128,7 @@ QuadNode::setSubQuadEdge( int q )
 }
 
 bool
-QuadNode::subQuadEdge(int q)
+QuadNode::subQuadEdge(int q) const 
 {
 	if ( q == 0 )
 		return m_hasEdge&0x01;
