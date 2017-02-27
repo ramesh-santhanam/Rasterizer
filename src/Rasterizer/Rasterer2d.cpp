@@ -4,6 +4,7 @@
 #include <cstddef>
 #include <cassert>
 #include <iostream>
+#include <cmath>
 
 using namespace std;
 
@@ -29,9 +30,20 @@ Rasterer2d::debug()
 }
 
 void
-Rasterer2d::render()
+Rasterer2d::render(std::vector<std::vector<double>>& img)
 {
+	// make image size.
+	int size = exp2(m_depth);
+	img.resize(size);
+	for( int i = 0 ; i < size; i++ ) {
+		img[i].resize(size, 0.0);
+	}
 
+	int offset_x = 0;
+	int offset_y = 0;
+
+	assert(m_root);
+	writeImage( img, offset_x, offset_y, size,  m_root, m_qtree.m_haar00 );
 }
 
 void
@@ -301,3 +313,27 @@ Rasterer2d::_rasterize(QuadNode* node, double x0, double y0, double x1, double y
 	} // switch	
 	
 }
+
+void
+Rasterer2d::writeImage( std::vector<std::vector<double>>& img,
+						int offset_x, int offset_y, 
+						int img_size,
+                        QuadNode* node,
+						double val )
+{
+	double node_value[4];
+	for( int q = 0; q < 4; q++ ) {
+		node_value[q] = val;
+		for( int b = 0; b < 3; b++ ) {
+			node_value[q] += node->m_haar[b];
+		}
+	}
+
+	for( int q = 0; q < 4; q++ ) {
+		int sx = (q & 0x01) ? 0.5*img_size : 0;
+		int ox = offset_x + sx;
+		int sy = (q & 0x02) ? 0.5*img_size : 0;
+		int oy = offset_y + sy;
+	}
+}
+

@@ -305,6 +305,13 @@ TEST(RasterizeTest, square) {
 	for( int i = 0; i < 4; i++ ) {
    		rast.rasterize(x[i], y[i], x[(i+1)%4], y[(i+1)%4]);
 	}
+
+	std::vector<std::vector<double>> img;
+	rast.render(img);
+	EXPECT_FLOAT_EQ(img.size(),exp2(4.0));
+	for( int i = 0; i < img.size(); i++ ) {
+		EXPECT_FLOAT_EQ(img[i].size(), exp2(4.0));
+	}
 }
 
 int main(int argc, char **argv ) {
