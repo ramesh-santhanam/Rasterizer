@@ -43,6 +43,7 @@ Rasterer2d::render(std::vector<std::vector<double>>& img)
 	int offset_y = 0;
 
 	assert(m_root);
+	cout << "render root:  " << size << "::" <<  m_qtree.m_haar00 <<"\n";
 	writeImage( img, offset_x, offset_y, size,  m_root, m_qtree.m_haar00 );
 }
 
@@ -53,7 +54,6 @@ Rasterer2d::rasterize(double x0, double y0, double x1, double y1)
 	auto evalC00 = [] (double x0, double y0, double x1, double y1) ->double {
         	return 0.5 * ( x0 * y1 - x1 * y0 );
     	};
-
 	m_qtree.m_haar00 += evalC00( x0, y0, x1, y1 );	
 	int level = 0;
 
@@ -180,7 +180,7 @@ Rasterer2d::_rasterize(QuadNode* node, double x0, double y0, double x1, double y
 	};
 
 	node->setLevel(level);
-	if( level == m_depth )
+	if( level == m_depth-1 )
 		node->setLeaf(true);
 
 	unsigned int code0 = pointCode(x0, y0);
@@ -193,7 +193,7 @@ Rasterer2d::_rasterize(QuadNode* node, double x0, double y0, double x1, double y
 
 		node->setSubQuadEdge(code0);
 
-		if( level == m_depth ) 
+		if( level == m_depth-1 ) 
 			return;
 
 		node = getChild(node, code0);
@@ -217,7 +217,7 @@ Rasterer2d::_rasterize(QuadNode* node, double x0, double y0, double x1, double y
                	xform( rx[0], ry[0], code0 );
                 evalCoefficients( node->m_haar, x0, y0, rx[0], ry[0], code0 );
 				node->setSubQuadEdge(code0);
-				if( level != m_depth ) {
+				if( level != m_depth-1 ) {
 					QuadNode* c = getChild(node, code0);
 					_rasterize( c, x0, y0, rx[0], ry[0], level+1);
 				}
@@ -225,7 +225,7 @@ Rasterer2d::_rasterize(QuadNode* node, double x0, double y0, double x1, double y
                 xform( rx[1], ry[1], code1 );
                 evalCoefficients( node->m_haar, rx[1], ry[1], x1, y1, code1 );
 				node->setSubQuadEdge(code1);
-				if( level != m_depth ) { 
+				if( level != m_depth-1 ) { 
 					QuadNode* c = getChild(node, code1);
 					_rasterize( c, rx[1], ry[1], x1, y1, level+1);
 				} 
@@ -244,7 +244,7 @@ Rasterer2d::_rasterize(QuadNode* node, double x0, double y0, double x1, double y
                	xform( rx[0], ry[0], code0);
                 evalCoefficients( node->m_haar, x0, y0, rx[0], ry[0], code0 );
 				node->setSubQuadEdge(code0);
-				if( level != m_depth ) {
+				if( level != m_depth-1 ) {
 					QuadNode* c = getChild(node, code0);
 					_rasterize( c, x0, y0, rx[0], ry[0], level+1);
 				}
@@ -253,7 +253,7 @@ Rasterer2d::_rasterize(QuadNode* node, double x0, double y0, double x1, double y
                 xform( rx[1], ry[1], code1);
                 evalCoefficients( node->m_haar, rx[1], ry[1], x1, y1, code1 );
 				node->setSubQuadEdge(code1);
-				if( level != m_depth ) {
+				if( level != m_depth-1 ) {
 					QuadNode* c = getChild(node, code1);
 					_rasterize( c, rx[1], ry[1], x1, y1, level+1);
 				}
@@ -285,7 +285,7 @@ Rasterer2d::_rasterize(QuadNode* node, double x0, double y0, double x1, double y
             xform( rx[0], ry[0], code0);
             evalCoefficients( node->m_haar, x0, y0, rx[0], ry[0], code0 );
 			node->setSubQuadEdge(code0);
-			if( level != m_depth ) {
+			if( level != m_depth-1 ) {
 				QuadNode* c = getChild(node, code0);
 				_rasterize( c, x0, y0, rx[0], ry[0], level+1);
 			}	
@@ -295,7 +295,7 @@ Rasterer2d::_rasterize(QuadNode* node, double x0, double y0, double x1, double y
                 xform( rx[2], ry[2], code);
                 evalCoefficients( node->m_haar, rx[1], ry[1], rx[2], ry[2], code );
 				node->setSubQuadEdge(code);
-				if( level != m_depth ) {
+				if( level != m_depth-1 ) {
 					QuadNode* c = getChild(node, code);
 					_rasterize( c, rx[1], ry[1], rx[2], ry[2], level+1);
 				}	
@@ -304,7 +304,7 @@ Rasterer2d::_rasterize(QuadNode* node, double x0, double y0, double x1, double y
             xform( x1, y1, code1);
             evalCoefficients( node->m_haar, rx[3], ry[3], x1, y1, code1 );		
 			node->setSubQuadEdge(code1);
-			if( level != m_depth ) {
+			if( level != m_depth-1 ) {
 				QuadNode* c = getChild(node, code1);
 				_rasterize( c, rx[3], ry[3], x1, y1, level+1);
 			}
@@ -329,24 +329,58 @@ Rasterer2d::writeImage( std::vector<std::vector<double>>& img,
 		}
 	}
 
+	// terminate.
+	if( node->isLeaf() ) {
+		for( int q = 0; q < 4; q++ ) {
+
+			int sx = (q & 0x01) ? 0.5*img_size : 0;
+			int ox = offset_x + sx;
+			int sy = (q & 0x02) ? 0.5*img_size : 0;
+			int oy = offset_y + sy;
+			int half = 0.5 * img_size;
+			if( node->subQuadEdge(q) )
+				writeImageBlock( img, ox, oy, half, half,  node_value[q] );
+			else if( node_value[q] > 0.5 )
+				writeImageBlock( img, ox, oy, half, half, 1.0);
+		}
+		return;
+	}
+
 	for( int q = 0; q < 4; q++ ) {
 		int sx = (q & 0x01) ? 0.5*img_size : 0;
 		int ox = offset_x + sx;
 		int sy = (q & 0x02) ? 0.5*img_size : 0;
 		int oy = offset_y + sy;
-
+		int half = 0.5 * img_size;
 		const QuadNode* qc = node->getSubQuad(q);	
 		if( ! qc  ) {
 			// parent has edge - no child because leaf.
 			if( node->subQuadEdge(q) ) {
-
+				writeImageBlock( img, ox, oy, half, half, node_value[q] );
+			} else if( val > 0.5 ) {
+				writeImageBlock( img, ox, oy, half, half, 1.0 );
 			}
-			// commit value.
-			if( val > 0.5 ) {
-
-			}
+		} else {
+			// recurse if node is not leaf.
+			writeImage( img, ox, oy, half, qc, node_value[q] );
 		}
+	}
+}
 
+void
+Rasterer2d::writeImageBlock(
+	std::vector<std::vector<double>>& img,
+	int  ox,
+	int  oy,
+	int  sx,
+	int  sy,
+	double val )
+{
+	for( int r = oy ; r < oy + sy; r++ ) {
+		std::vector<double>& row = img[r];
+		for( int c = ox ; c < ox + sx; c++ ) {
+			row[c] = val;
+		}
 	}
 }
 

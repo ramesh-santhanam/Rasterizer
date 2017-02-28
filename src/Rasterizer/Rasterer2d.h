@@ -28,6 +28,13 @@ class Rasterer2d {
 						 const QuadNode* node,
 						 double val );
 
+		void writeImageBlock( std::vector<std::vector<double>>& img,
+						int  ox,
+						int  oy,
+						int  sx,
+						int  sy,
+						double val );
+
 		void _rasterize(QuadNode* node, double x0, double y0, 
 						double x1, double y1, int level);
         QuadNode* getChild(QuadNode* n, int index);

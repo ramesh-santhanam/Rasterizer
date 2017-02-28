@@ -297,20 +297,23 @@ TEST(RasterizeTest, square) {
 	float y[4];
 	
 	x[0] = y[0] = 0.;
-	x[1] = 0.0; y[1] = 0.;
+	x[1] = 1.0; y[1] = 0.;
 	x[2] = 1.0; y[2] = 1.;
 	x[3] = 0.0; y[3] = 1.;
 
-    Rasterer2d rast(4);
+	int depth = 8;
+	Rasterer2d rast(depth);
 	for( int i = 0; i < 4; i++ ) {
    		rast.rasterize(x[i], y[i], x[(i+1)%4], y[(i+1)%4]);
 	}
 
 	std::vector<std::vector<double>> img;
 	rast.render(img);
-	EXPECT_FLOAT_EQ(img.size(),exp2(4.0));
+	EXPECT_FLOAT_EQ(img.size(),exp2(depth));
 	for( int i = 0; i < img.size(); i++ ) {
-		EXPECT_FLOAT_EQ(img[i].size(), exp2(4.0));
+		EXPECT_FLOAT_EQ(img[i].size(), exp2(depth));
+		for( int j = 0; j <  img[i].size(); j++ )
+			EXPECT_FLOAT_EQ(img[i][j], 1.0);
 	}
 }
 
