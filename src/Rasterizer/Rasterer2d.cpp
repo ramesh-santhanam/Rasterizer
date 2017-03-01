@@ -321,18 +321,20 @@ Rasterer2d::writeImage( std::vector<std::vector<double>>& img,
                         const QuadNode* node,
 						double val )
 {
+	// look at the basis functions.
+	int quadSign[4][3] = {{1,1,1},{-1,1,-1},{1,-1,-1},{-1,-1,1}};
 	double node_value[4];
 	for( int q = 0; q < 4; q++ ) {
 		node_value[q] = val;
 		for( int b = 0; b < 3; b++ ) {
-			node_value[q] += node->m_haar[b];
+			node_value[q] += quadSign[q][b] *  node->m_haar[b];
 		}
 	}
+
 
 	// terminate.
 	if( node->isLeaf() ) {
 		for( int q = 0; q < 4; q++ ) {
-
 			int sx = (q & 0x01) ? 0.5*img_size : 0;
 			int ox = offset_x + sx;
 			int sy = (q & 0x02) ? 0.5*img_size : 0;

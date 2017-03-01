@@ -88,9 +88,9 @@ TEST(HaarLinearTest, Quad0) {
 	EXPECT_FLOAT_EQ(rast.m_root->m_haar[1], cval[1]);
 	EXPECT_FLOAT_EQ(rast.m_root->m_haar[2], cval[2]);
 #if 0
-    cout << "Haar0 (T1:Q0):" << rast.m_root->m_haar[0] << "," << cval[0] << "\n";
-    cout << "Haar1 (T1:Q0):" << rast.m_root->m_haar[1] << "," << cval[1] << "\n";
-    cout << "Haar2 (T1:Q0):" << rast.m_root->m_haar[2] << "," << cval[2] << "\n";
+    std::cout << "Haar0 (T1:Q0):" << rast.m_root->m_haar[0] << "," << cval[0] << "\n";
+    std::cout << "Haar1 (T1:Q0):" << rast.m_root->m_haar[1] << "," << cval[1] << "\n";
+    std::cout << "Haar2 (T1:Q0):" << rast.m_root->m_haar[2] << "," << cval[2] << "\n";
 #endif
 }
 
@@ -115,10 +115,10 @@ TEST(HaarLinearTest, Quad1) {
 	EXPECT_FLOAT_EQ(rast.m_root->m_haar[0], cval[0]);
 	EXPECT_FLOAT_EQ(rast.m_root->m_haar[1], cval[1]);
 	EXPECT_FLOAT_EQ(rast.m_root->m_haar[2], cval[2]);
-#if 0
-    cout << "Haar0 (T1:Q1):" << rast.m_root->m_haar[0] << "," << cval[0] << "\n";
-    cout << "Haar1 (T1:Q1):" << rast.m_root->m_haar[1] << "," << cval[1] << "\n";
-    cout << "Haar2 (T1:Q1):" << rast.m_root->m_haar[2] << "," << cval[2] << "\n";
+#if 1
+    std::cout << "Haar0 (T1:Q1):" << rast.m_root->m_haar[0] << "," << cval[0] << "\n";
+    std::cout << "Haar1 (T1:Q1):" << rast.m_root->m_haar[1] << "," << cval[1] << "\n";
+    std::cout << "Haar2 (T1:Q1):" << rast.m_root->m_haar[2] << "," << cval[2] << "\n";
 #endif
 }
 
@@ -144,10 +144,10 @@ TEST(HaarLinearTest, Quad2) {
 	EXPECT_FLOAT_EQ(rast.m_root->m_haar[1], cval[1]);
 	EXPECT_FLOAT_EQ(rast.m_root->m_haar[2], cval[2]);
 
-#if 0
-    cout << "Haar0 (T1:Q1):" << rast.m_root->m_haar[0] << "," << cval[0] << "\n";
-    cout << "Haar1 (T1:Q1):" << rast.m_root->m_haar[1] << "," << cval[1] << "\n";
-    cout << "Haar2 (T1:Q1):" << rast.m_root->m_haar[2] << "," << cval[2] << "\n";
+#if 1
+    std::cout << "Haar0 (T1:Q1):" << rast.m_root->m_haar[0] << "," << cval[0] << "\n";
+    std::cout << "Haar1 (T1:Q1):" << rast.m_root->m_haar[1] << "," << cval[1] << "\n";
+    std::cout << "Haar2 (T1:Q1):" << rast.m_root->m_haar[2] << "," << cval[2] << "\n";
 #endif
 }
 
@@ -173,10 +173,10 @@ TEST(HaarLinearTest, Quad3) {
 	EXPECT_FLOAT_EQ(rast.m_root->m_haar[1], cval[1]);
 	EXPECT_FLOAT_EQ(rast.m_root->m_haar[2], cval[2]);
 
-#if 0
-    cout << "Haar0 (T1:Q1):" << rast.m_root->m_haar[0] << "," << cval[0] << "\n";
-    cout << "Haar1 (T1:Q1):" << rast.m_root->m_haar[1] << "," << cval[1] << "\n";
-    cout << "Haar2 (T1:Q1):" << rast.m_root->m_haar[2] << "," << cval[2] << "\n";
+#if 1
+    std::cout << "Haar0 (T1:Q1):" << rast.m_root->m_haar[0] << "," << cval[0] << "\n";
+    std::cout << "Haar1 (T1:Q1):" << rast.m_root->m_haar[1] << "," << cval[1] << "\n";
+    std::cout << "Haar2 (T1:Q1):" << rast.m_root->m_haar[2] << "," << cval[2] << "\n";
 #endif
 }
 
@@ -314,6 +314,35 @@ TEST(RasterizeTest, square) {
 		EXPECT_FLOAT_EQ(img[i].size(), exp2(depth));
 		for( int j = 0; j <  img[i].size(); j++ )
 			EXPECT_FLOAT_EQ(img[i][j], 1.0);
+	}
+}
+
+TEST(RasterizeTest, Letter_L) {
+
+	float x[6];
+	float y[6];
+	
+	x[0] = y[0] = 0.;
+	x[1] = 1.0; y[1] = 0.;
+	x[2] = 1.0; y[2] = 0.35;
+	x[3] = 0.45; y[3] = 0.25;
+	x[4] = 0.25; y[4] = 1.0;
+	x[5] = 0.0; y[5] = 1.0;
+
+	int depth = 3;
+	Rasterer2d rast(depth);
+	for( int i = 0; i < 6; i++ ) {
+   		rast.rasterize(x[i], y[i], x[(i+1)%6], y[(i+1)%6]);
+	}
+
+	std::vector<std::vector<double>> img;
+	rast.render(img);
+	EXPECT_FLOAT_EQ(img.size(),exp2(depth));
+	for( int i = 0; i < img.size(); i++ ) {
+		EXPECT_FLOAT_EQ(img[i].size(), exp2(depth));
+		for( int j = 0; j < img[i].size(); j++ ) {
+			if( i < 2 ) EXPECT_FLOAT_EQ(img[i][j], 1.0);
+		}
 	}
 }
 
