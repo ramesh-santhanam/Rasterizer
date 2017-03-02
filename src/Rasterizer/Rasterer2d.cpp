@@ -5,6 +5,8 @@
 #include <cassert>
 #include <iostream>
 #include <cmath>
+#include <iomanip>
+#include <sstream>
 
 using namespace std;
 
@@ -55,6 +57,7 @@ Rasterer2d::rasterize(double x0, double y0, double x1, double y1)
         	return 0.5 * ( x0 * y1 - x1 * y0 );
     	};
 	m_qtree.m_haar00 += evalC00( x0, y0, x1, y1 );	
+
 	int level = 0;
 
 	if( m_depth > 0 ) {
@@ -386,3 +389,34 @@ Rasterer2d::writeImageBlock(
 	}
 }
 
+void
+Rasterer2d::toPostscript(const std::vector<std::vector<double>>& img, const std::string& name)
+{
+	if( img.size() == 0 )
+		return;
+
+	// size of image
+	int nr = img.size();
+	int nc = img[0].size();
+
+	auto clamp = [] (float v) -> float {
+		if( v < 0.0 )
+			return 0.0;
+		if( v > 1.0 )
+			return 1.0;
+		return v;
+	};
+
+	for( int r = 0; r < nr; r++ ) {
+		assert(img[r].size() == nc );
+		std::stringstream ss;
+  		ss << std::hex;	
+		for( int c = 0; c < nc; c++ ) {
+			float val = img[r][c];
+			val = clamp(val);
+			int gv = (1 - val ) * 255;	
+			ss << std::setw(2) << std::setfill('0') << gv;
+		}
+		cout << ss.str().c_str() << "\n";
+	}
+}

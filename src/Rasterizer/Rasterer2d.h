@@ -14,8 +14,11 @@ class Rasterer2d {
         // rasterize a line
         void rasterize(double x0, double y0, double x1, double y1);
 
-		// render as image 
-		void render(std::vector<std::vector<double>>& img);
+	// render as image 
+	void render(std::vector<std::vector<double>>& img);
+
+	// to postscript grey scale.
+	void toPostscript(const std::vector<std::vector<double>>& img, const std::string& name);
 
    public:
         void debug();

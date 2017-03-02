@@ -301,7 +301,7 @@ TEST(RasterizeTest, square) {
 	x[2] = 1.0; y[2] = 1.;
 	x[3] = 0.0; y[3] = 1.;
 
-	int depth = 8;
+	int depth = 4;
 	Rasterer2d rast(depth);
 	for( int i = 0; i < 4; i++ ) {
    		rast.rasterize(x[i], y[i], x[(i+1)%4], y[(i+1)%4]);
@@ -315,9 +315,11 @@ TEST(RasterizeTest, square) {
 		for( int j = 0; j <  img[i].size(); j++ )
 			EXPECT_FLOAT_EQ(img[i][j], 1.0);
 	}
+	rast.toPostscript(img, "square");
 }
 
-TEST(RasterizeTest, Letter_L) {
+#if 0
+TEST(RasterizeTest, DISABLE_Letter_L) {
 
 	float x[6];
 	float y[6];
@@ -329,7 +331,7 @@ TEST(RasterizeTest, Letter_L) {
 	x[4] = 0.25; y[4] = 1.0;
 	x[5] = 0.0; y[5] = 1.0;
 
-	int depth = 3;
+	int depth = 5;
 	Rasterer2d rast(depth);
 	for( int i = 0; i < 6; i++ ) {
    		rast.rasterize(x[i], y[i], x[(i+1)%6], y[(i+1)%6]);
@@ -344,8 +346,62 @@ TEST(RasterizeTest, Letter_L) {
 			if( i < 2 ) EXPECT_FLOAT_EQ(img[i][j], 1.0);
 		}
 	}
+	rast.toPostscript(img, "letterL");
+}
+#endif
+
+TEST(RasterizeTest, Triangle) {
+
+	float x[3];
+	float y[3];
+	
+	x[0] = 0.75; y[0] = 1.;
+	x[1] = 0.25; y[1] = 1.;
+	x[2] = 0.5; y[2] = 0.0;
+
+	int depth = 4;
+	Rasterer2d rast(depth);
+	for( int i = 0; i < 3; i++ ) {
+   		rast.rasterize(x[i], y[i], x[(i+1)%3], y[(i+1)%3]);
+	}
+
+	std::vector<std::vector<double>> img;
+	rast.render(img);
+	EXPECT_FLOAT_EQ(img.size(),exp2(depth));
+	for( int i = 0; i < img.size(); i++ ) {
+		EXPECT_FLOAT_EQ(img[i].size(), exp2(depth));
+	}
+	rast.toPostscript(img, "Triangle");
 }
 
+#if 0
+TEST(RasterizeTest, DISABLE_Hexagon) {
+
+	float x[6];
+	float y[6];
+	
+	x[0] = 0.25; y[0] = 0.;
+	x[1] = 0.75; y[1] = 0.;
+	x[2] = 1.0; y[2] = 0.5;
+	x[3] = 0.75; y[3] = 1.0;
+	x[4] = 0.25; y[4] = 1.0;
+	x[5] = 0.0; y[5] = 0.5;
+
+	int depth = 4;
+	Rasterer2d rast(depth);
+	for( int i = 0; i < 6; i++ ) {
+   		rast.rasterize(x[i], y[i], x[(i+1)%6], y[(i+1)%6]);
+	}
+
+	std::vector<std::vector<double>> img;
+	rast.render(img);
+	EXPECT_FLOAT_EQ(img.size(),exp2(depth));
+	for( int i = 0; i < img.size(); i++ ) {
+		EXPECT_FLOAT_EQ(img[i].size(), exp2(depth));
+	}
+	rast.toPostscript(img, "Hexagon");
+}
+#endif
 int main(int argc, char **argv ) {
 ::testing::InitGoogleTest(&argc, argv);
 	return RUN_ALL_TESTS();
