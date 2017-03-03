@@ -12,7 +12,7 @@ include_directories(${VTK_INCLUDE_DIRS})
 message("include dirs...: ${VTK_INCLUDE_DIRS} ...")
 
 set( HEADER_FILES ${PROJECT_SOURCE_DIR}/src/Rasterizer/Rasterize2d.h )
-set( HEADER_FILES ${HEADER_FILES} ${PROJECT_SOURCE_DIR}/src/Rasterizer/QuadTree.h ${PROJECT_SOURCE_DIR}/src/Rasterizer/Rasterer2d.h  ${PROJECT_SOURCE_DIR}/src/Rasterizer/Tree2ps.h )
+set( HEADER_FILES ${HEADER_FILES} ${PROJECT_SOURCE_DIR}/src/Rasterizer/QuadTree.h ${PROJECT_SOURCE_DIR}/src/Rasterizer/Rasterer2d.h  ${PROJECT_SOURCE_DIR}/src/Rasterizer/Tree2PS.h )
 
 set( HEADER_FILES ${HEADER_FILES} ${VTK_INCLUDE_DIRS} )
 
