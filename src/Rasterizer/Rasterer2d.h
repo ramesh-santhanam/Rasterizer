@@ -3,10 +3,16 @@
 
 #include "QuadTree.h"
 
+class Tree2ps;
+
 // Rasterize 2d polygon one segment at a time.
 class Rasterer2d {
 
 	public:
+	friend class Tree2ps;
+
+	public:
+
 
         Rasterer2d(int depth);
         ~Rasterer2d();
@@ -20,26 +26,30 @@ class Rasterer2d {
 	// to postscript grey scale.
 	void toPostscript(const std::vector<std::vector<double>>& img, const std::string& name);
 
+	// quadtree to postscript
+	void treeToPostscript(const std::string& name);
+
    public:
         void debug();
 
    protected:
 
-		void writeImage( std::vector<std::vector<double>>& img,
+	void writeImage( std::vector<std::vector<double>>& img,
 						 int offset_x, int offset_y,
 						 int size,
 						 const QuadNode* node,
 						 double val );
 
-		void writeImageBlock( std::vector<std::vector<double>>& img,
+	void writeImageBlock( std::vector<std::vector<double>>& img,
 						int  ox,
 						int  oy,
 						int  sx,
 						int  sy,
 						double val );
 
-		void _rasterize(QuadNode* node, double x0, double y0, 
-						double x1, double y1, int level);
+	void _rasterize(QuadNode* node, double x0, double y0, 
+			double x1, double y1, int level);
+
         QuadNode* getChild(QuadNode* n, int index);
 
     public:

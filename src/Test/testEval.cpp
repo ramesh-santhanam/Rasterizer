@@ -1,4 +1,6 @@
 #include <Rasterer2d.h>
+#include <Tree2PS.h>
+
 #include "gtest/gtest.h"
 #include <iostream>
 #include <math.h>
@@ -301,7 +303,7 @@ TEST(RasterizeTest, square) {
 	x[2] = 1.0; y[2] = 1.;
 	x[3] = 0.0; y[3] = 1.;
 
-	int depth = 4;
+	int depth = 3;
 	Rasterer2d rast(depth);
 	for( int i = 0; i < 4; i++ ) {
    		rast.rasterize(x[i], y[i], x[(i+1)%4], y[(i+1)%4]);
@@ -315,7 +317,14 @@ TEST(RasterizeTest, square) {
 		for( int j = 0; j <  img[i].size(); j++ )
 			EXPECT_FLOAT_EQ(img[i][j], 1.0);
 	}
+
 	rast.toPostscript(img, "square");
+
+	{
+		std::string name("squareQ.ps");
+		Tree2PS t2ps;
+		t2ps.write(rast,name);
+	}
 }
 
 #if 0
@@ -347,6 +356,7 @@ TEST(RasterizeTest, DISABLE_Letter_L) {
 		}
 	}
 	rast.toPostscript(img, "letterL");
+	rast.treeToPostscript("letterLQ");
 }
 #endif
 
@@ -371,7 +381,8 @@ TEST(RasterizeTest, Triangle) {
 	for( int i = 0; i < img.size(); i++ ) {
 		EXPECT_FLOAT_EQ(img[i].size(), exp2(depth));
 	}
-	rast.toPostscript(img, "Triangle");
+	rast.toPostscript(img, "triangle.ps");
+	rast.treeToPostscript("triangleQ.ps");
 }
 
 #if 0

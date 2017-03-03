@@ -139,3 +139,27 @@ QuadNode::subQuadEdge(int q) const
 	assert(q==3);
 	return m_hasEdge&0x04;
 }
+
+// Tree traverse.
+void visitTree(
+	QuadNode* node,
+        std::function<void (QuadNode*)> nodeFunc )
+{
+	assert(node);
+	assert(node->getParent() == nullptr);
+
+	std::vector<QuadNode*> nodes;
+	nodes.push_back(node);
+	do {
+		QuadNode* ln  = nodes.back();
+		nodeFunc( ln );
+		nodes.pop_back();
+		for( int i  = 0; i < 4; i++ ) {
+			const QuadNode* c = ln->getSubQuad(i);
+			if( ! c ) continue;
+			nodes.push_back(const_cast<QuadNode*>(c));	
+		}
+	} while( nodes.size() );
+}
+
+

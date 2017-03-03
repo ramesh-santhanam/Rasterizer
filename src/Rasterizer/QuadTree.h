@@ -2,6 +2,7 @@
 #define QUAD_ALLOCATOR_H
 
 #include <vector>
+#include <functional>
 
 template<class T>
 class QuadBlockAllocator 
@@ -143,4 +144,8 @@ class QuadTree
 	private:
 		QuadBlockAllocator<QuadNode> m_quads;		
 };
+
+/* traverse tree - call back function with node lower left hand corner and size */
+void visitTree( QuadNode* node,
+		std::function<void(QuadNode* n)> nodeFunc );
 #endif
