@@ -35,6 +35,11 @@ class ExportPS {
 	std::ofstream m_file;
 	int m_w;
 	int m_h;
+
+	double m_ox;
+	double m_oy;
+	double m_sx;
+	double m_sy;
 };
 
 ExportPS::ExportPS(std::string& name)
@@ -45,6 +50,11 @@ ExportPS::ExportPS(std::string& name)
 	m_w = 595;
 	m_h = 842;
 
+	m_ox = 0.25*m_w;	
+	m_oy = 0.25*m_h;	
+
+	m_sx = 0.5*m_w;
+	m_sy = 0.5*m_h;	
 	if( m_file.is_open() ) {
 
 		m_file << "%!PS-Adobe " << '\n'
@@ -95,6 +105,35 @@ ExportPS::write(const MultiLine& lines)
 	if( ! m_file.is_open() )
 		return false;
 
+
+	auto xform = [&] (double& x, double &y) {
+		x = m_ox + x * m_sx;
+		y = m_oy + y * m_sy;
+	};
+	auto writeLine = [&] (double x1, double y1, double x2, double y2 ) {
+		xform(x1, y1);
+		m_file << x1 << " " << y1 << " " << " m " <<  " " ;
+		xform(x2, y2);
+		m_file << x2 << " " << y2 << " " << " l " ;
+		m_file << " stroke " << std::endl;
+	};
+	// write lines. - x = const.
+	m_file << "%const grid lines" << std::endl;
+	m_file << "0.45" << " slw " << std::endl;
+
+	for( auto s = lines.begin(); s != lines.end(); s++ ) {
+		double v = s->first;
+		const DblSet& ords = s->second;
+
+		double x = v;
+		double y = *ords.begin(); 
+		for( int i = 1; i < ords.size(); i++ ) {
+			double yn = *std::next(ords.begin(), i);
+			// write line.
+			writeLine(x, y, x, yn);	
+			y = yn;	
+		}
+	} 
 
 	return true;
 }
@@ -189,7 +228,7 @@ Tree2PS::write( Rasterer2d& rast, std::string& name)
 	{
 		ExportPS wtoPS(name);
 		wtoPS.write(lineX);
-		wtoPS.write(lineY);
+		//wtoPS.write(lineY);
 	}
 	cout << " X lines: " << lineX.size();
 	cout << " Y lines: " << lineY.size();

@@ -303,7 +303,7 @@ TEST(RasterizeTest, square) {
 	x[2] = 1.0; y[2] = 1.;
 	x[3] = 0.0; y[3] = 1.;
 
-	int depth = 3;
+	int depth = 2;
 	Rasterer2d rast(depth);
 	for( int i = 0; i < 4; i++ ) {
    		rast.rasterize(x[i], y[i], x[(i+1)%4], y[(i+1)%4]);
