@@ -26,9 +26,6 @@ class Rasterer2d {
 	// to postscript grey scale.
 	void toPostscript(const std::vector<std::vector<double>>& img, const std::string& name);
 
-	// quadtree to postscript
-	void treeToPostscript(const std::string& name);
-
    public:
         void debug();
 

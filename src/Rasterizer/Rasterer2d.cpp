@@ -7,8 +7,6 @@
 #include <cmath>
 #include <iomanip>
 #include <sstream>
-#include <set>
-#include <map>
 #include <vector>
 #include <string>
 
@@ -424,87 +422,3 @@ Rasterer2d::toPostscript(const std::vector<std::vector<double>>& img, const std:
 		cout << ss.str().c_str() << "\n";
 	}
 }
-
-void
-Rasterer2d::treeToPostscript(const std::string& name)
-{
-	typedef std::set<double> DblSet;
-	typedef std::map<double, DblSet> MultiLine;
-	MultiLine lineX; // x - ordinate is key, lines with slope infinity.
-	MultiLine lineY; // y -ordinate is key, lines with slope zero.
-
-	auto quadSize = [] (int level ) -> double {
-		double size = 1.;
-		for( int i = 0; i < level; i++ )
-			size = size/2.;
-		return size;	
-	};
-
-	std::vector<int> qcodes;
-	auto quadPosition = [&] (QuadNode* n, double& x, double& y ) {
-		x = 0.;
-		y = 0.;
-		if( n->getParent() == nullptr )
-			return;		
-
-		qcodes.resize(n->m_level+1,-1);
-		QuadNode* qc = n;
-		do {
-			int index = -1;
-			QuadNode* qp = qc->getParent();
-			if( qp == nullptr )
-				index = 0;
-			else {
-				for( int i = 0; i < 4; i++ ) {
-					if( qp->getSubQuad(i) == qc ) {
-						index = i;
-						break;
-					}
-				}
-			}
-			qcodes[qc->m_level] = index;
-			qc = qp;
-		} while( qc != nullptr );
-
-		// transform (0,0) to right location using codes
-		// scaling by 0.5 each time along the way.
-		double s = 1.0;
-	
-		// skip the first as quad would be outer one.	
-		for( int i = 1; i < qcodes.size(); i++ ) {
-
-			assert(qcodes[i] != -1);
-			double sx = (qcodes[i] & 0x01) ? 0.5*s : 0;
-			x = x + sx;			
-			double sy = (qcodes[i] & 0x02) ? 0.5*s : 0;
-			y = y + sy;
-			s *= 0.5;
-		}
-		//cout << "came out::" << qcodes[n->m_level] << ":size:" << s << "<" << x << "," << y << ">" << "\n";
-	};
-
-	auto nodeFunc = [&] (QuadNode* n)->void {
-		assert(n);
-		if( ! n )
-			return;
-		double  s = quadSize(n->m_level);		
-		double x, y;
-		quadPosition(n, x, y);
-		
-		// lineX
-		lineX[x].insert(y);
-		lineX[x].insert(y+s);
-		// lineY
-		lineY[y].insert(x);
-		lineY[y].insert(x+s);
-					
-	};
-
-	visitTree(m_root, nodeFunc );
-
-	// write PS.
-	
-	cout << " X lines: " << lineX.size();
-	cout << " Y lines: " << lineY.size();
-}
-

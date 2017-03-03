@@ -303,7 +303,7 @@ TEST(RasterizeTest, square) {
 	x[2] = 1.0; y[2] = 1.;
 	x[3] = 0.0; y[3] = 1.;
 
-	int depth = 2;
+	int depth = 8;
 	Rasterer2d rast(depth);
 	for( int i = 0; i < 4; i++ ) {
    		rast.rasterize(x[i], y[i], x[(i+1)%4], y[(i+1)%4]);
@@ -317,9 +317,7 @@ TEST(RasterizeTest, square) {
 		for( int j = 0; j <  img[i].size(); j++ )
 			EXPECT_FLOAT_EQ(img[i][j], 1.0);
 	}
-
 	rast.toPostscript(img, "square");
-
 	{
 		std::string name("squareQ.ps");
 		Tree2PS t2ps;
@@ -327,8 +325,7 @@ TEST(RasterizeTest, square) {
 	}
 }
 
-#if 0
-TEST(RasterizeTest, DISABLE_Letter_L) {
+TEST(RasterizeTest, Letter_L) {
 
 	float x[6];
 	float y[6];
@@ -340,7 +337,7 @@ TEST(RasterizeTest, DISABLE_Letter_L) {
 	x[4] = 0.25; y[4] = 1.0;
 	x[5] = 0.0; y[5] = 1.0;
 
-	int depth = 5;
+	int depth = 6;
 	Rasterer2d rast(depth);
 	for( int i = 0; i < 6; i++ ) {
    		rast.rasterize(x[i], y[i], x[(i+1)%6], y[(i+1)%6]);
@@ -356,9 +353,12 @@ TEST(RasterizeTest, DISABLE_Letter_L) {
 		}
 	}
 	rast.toPostscript(img, "letterL");
-	rast.treeToPostscript("letterLQ");
+	{
+		std::string name("letterLQ.ps");
+		Tree2PS t2ps;
+		t2ps.write(rast,name);
+	}
 }
-#endif
 
 TEST(RasterizeTest, Triangle) {
 
@@ -369,7 +369,7 @@ TEST(RasterizeTest, Triangle) {
 	x[1] = 0.25; y[1] = 1.;
 	x[2] = 0.5; y[2] = 0.0;
 
-	int depth = 4;
+	int depth = 6;
 	Rasterer2d rast(depth);
 	for( int i = 0; i < 3; i++ ) {
    		rast.rasterize(x[i], y[i], x[(i+1)%3], y[(i+1)%3]);
@@ -382,10 +382,35 @@ TEST(RasterizeTest, Triangle) {
 		EXPECT_FLOAT_EQ(img[i].size(), exp2(depth));
 	}
 	rast.toPostscript(img, "triangle.ps");
-	rast.treeToPostscript("triangleQ.ps");
+	{
+		std::string name("triangleQ.ps");
+		Tree2PS t2ps;
+		t2ps.write(rast,name);
+	}
 }
 
-#if 0
+TEST(RasterizeTest, TriangleRT) {
+
+	float x[3];
+	float y[3];
+	
+	x[0] = 0.0; y[0] = 0.;
+	x[1] = 1.0; y[1] = 0.;
+	x[2] = 0.0; y[2] = 1.0;
+
+	int depth = 8;
+	Rasterer2d rast(depth);
+	for( int i = 0; i < 3; i++ ) {
+   		rast.rasterize(x[i], y[i], x[(i+1)%3], y[(i+1)%3]);
+	}
+
+	{
+		std::string name("triangleRTQ.ps");
+		Tree2PS t2ps;
+		t2ps.write(rast,name);
+	}
+}
+
 TEST(RasterizeTest, DISABLE_Hexagon) {
 
 	float x[6];
@@ -398,7 +423,7 @@ TEST(RasterizeTest, DISABLE_Hexagon) {
 	x[4] = 0.25; y[4] = 1.0;
 	x[5] = 0.0; y[5] = 0.5;
 
-	int depth = 4;
+	int depth = 6;
 	Rasterer2d rast(depth);
 	for( int i = 0; i < 6; i++ ) {
    		rast.rasterize(x[i], y[i], x[(i+1)%6], y[(i+1)%6]);
@@ -411,8 +436,13 @@ TEST(RasterizeTest, DISABLE_Hexagon) {
 		EXPECT_FLOAT_EQ(img[i].size(), exp2(depth));
 	}
 	rast.toPostscript(img, "Hexagon");
+	{
+		std::string name("hexagonQ.ps");
+		Tree2PS t2ps;
+		t2ps.write(rast,name);
+	}
 }
-#endif
+
 int main(int argc, char **argv ) {
 ::testing::InitGoogleTest(&argc, argv);
 	return RUN_ALL_TESTS();

@@ -20,7 +20,8 @@
 using namespace std;
 
 typedef std::set<double> DblSet;
-typedef std::map<double, DblSet> MultiLine;
+typedef std::vector<double> DblValues;
+typedef std::map<double, DblValues> MultiLine;
 
 class ExportPS {
 
@@ -29,7 +30,7 @@ class ExportPS {
 	~ExportPS();
 
 	public:
-	bool write(const MultiLine& lines);
+	bool write(const MultiLine& lines, int);
 
 	public:
 	std::ofstream m_file;
@@ -99,7 +100,7 @@ ExportPS::~ExportPS()
 	m_file.close();	
 }
 bool
-ExportPS::write(const MultiLine& lines)
+ExportPS::write(const MultiLine& lines, int kind)
 {
 	assert(m_file.is_open());
 	if( ! m_file.is_open() )
@@ -123,17 +124,26 @@ ExportPS::write(const MultiLine& lines)
 
 	for( auto s = lines.begin(); s != lines.end(); s++ ) {
 		double v = s->first;
-		const DblSet& ords = s->second;
+		const DblValues& ords = s->second;
 
-		double x = v;
-		double y = *ords.begin(); 
-		for( int i = 1; i < ords.size(); i++ ) {
-			double yn = *std::next(ords.begin(), i);
-			// write line.
-			writeLine(x, y, x, yn);	
-			y = yn;	
+		double x = v;	
+		if( kind == 0 )
+			cout << "X line: " << x << ":" << 0.5*ords.size() <<  endl;
+		else
+			cout << "Y line: " << x << ":" << 0.5*ords.size() <<  endl;
+		
+		for( int i = 0; i < ords.size(); i+= 2 ) {
+			double y1 = ords[i]; 
+			double y2 = ords[i+1]; 
+			if( kind == 0 )
+				writeLine(x, y1, x, y2);	
+			else
+				writeLine(y1, x, y2, x);	
+		
+
 		}
-	} 
+	}
+	cout << "+++" << endl; 
 
 	return true;
 }
@@ -209,16 +219,21 @@ Tree2PS::write( Rasterer2d& rast, std::string& name)
 		assert(n);
 		if( ! n )
 			return;
+
 		double  s = quadSize(n->m_level);		
 		double x, y;
 		quadPosition(n, x, y);
 		
 		// lineX
-		lineX[x].insert(y);
-		lineX[x].insert(y+s);
+		lineX[x].push_back(y);
+		lineX[x].push_back(y+s);
+		lineX[x+s].push_back(y);
+		lineX[x+s].push_back(y+s);
 		// lineY
-		lineY[y].insert(x);
-		lineY[y].insert(x+s);
+		lineY[y].push_back(x);
+		lineY[y].push_back(x+s);
+		lineY[y+s].push_back(x);
+		lineY[y+s].push_back(x+s);
 					
 	};
 
@@ -227,8 +242,8 @@ Tree2PS::write( Rasterer2d& rast, std::string& name)
 	// write PS.
 	{
 		ExportPS wtoPS(name);
-		wtoPS.write(lineX);
-		//wtoPS.write(lineY);
+		wtoPS.write(lineX,0);
+		wtoPS.write(lineY,1);
 	}
 	cout << " X lines: " << lineX.size();
 	cout << " Y lines: " << lineY.size();
