@@ -127,10 +127,6 @@ ExportPS::write(const MultiLine& lines, int kind)
 		const DblValues& ords = s->second;
 
 		double x = v;	
-		if( kind == 0 )
-			cout << "X line: " << x << ":" << 0.5*ords.size() <<  endl;
-		else
-			cout << "Y line: " << x << ":" << 0.5*ords.size() <<  endl;
 		
 		for( int i = 0; i < ords.size(); i+= 2 ) {
 			double y1 = ords[i]; 
@@ -245,7 +241,7 @@ Tree2PS::write( Rasterer2d& rast, std::string& name)
 		wtoPS.write(lineX,0);
 		wtoPS.write(lineY,1);
 	}
-	cout << " X lines: " << lineX.size();
-	cout << " Y lines: " << lineY.size();
+	//cout << " X lines: " << lineX.size();
+	//cout << " Y lines: " << lineY.size();
 }
 

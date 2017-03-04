@@ -303,7 +303,7 @@ TEST(RasterizeTest, square) {
 	x[2] = 1.0; y[2] = 1.;
 	x[3] = 0.0; y[3] = 1.;
 
-	int depth = 8;
+	int depth = 6;
 	Rasterer2d rast(depth);
 	for( int i = 0; i < 4; i++ ) {
    		rast.rasterize(x[i], y[i], x[(i+1)%4], y[(i+1)%4]);
@@ -337,7 +337,7 @@ TEST(RasterizeTest, Letter_L) {
 	x[4] = 0.25; y[4] = 1.0;
 	x[5] = 0.0; y[5] = 1.0;
 
-	int depth = 6;
+	int depth = 4;
 	Rasterer2d rast(depth);
 	for( int i = 0; i < 6; i++ ) {
    		rast.rasterize(x[i], y[i], x[(i+1)%6], y[(i+1)%6]);
@@ -369,7 +369,7 @@ TEST(RasterizeTest, Triangle) {
 	x[1] = 0.25; y[1] = 1.;
 	x[2] = 0.5; y[2] = 0.0;
 
-	int depth = 6;
+	int depth = 4;
 	Rasterer2d rast(depth);
 	for( int i = 0; i < 3; i++ ) {
    		rast.rasterize(x[i], y[i], x[(i+1)%3], y[(i+1)%3]);
@@ -398,7 +398,7 @@ TEST(RasterizeTest, TriangleRT) {
 	x[1] = 1.0; y[1] = 0.;
 	x[2] = 0.0; y[2] = 1.0;
 
-	int depth = 8;
+	int depth = 4;
 	Rasterer2d rast(depth);
 	for( int i = 0; i < 3; i++ ) {
    		rast.rasterize(x[i], y[i], x[(i+1)%3], y[(i+1)%3]);
@@ -411,7 +411,7 @@ TEST(RasterizeTest, TriangleRT) {
 	}
 }
 
-TEST(RasterizeTest, DISABLE_Hexagon) {
+TEST(RasterizeTest, Hexagon) {
 
 	float x[6];
 	float y[6];
@@ -423,7 +423,7 @@ TEST(RasterizeTest, DISABLE_Hexagon) {
 	x[4] = 0.25; y[4] = 1.0;
 	x[5] = 0.0; y[5] = 0.5;
 
-	int depth = 6;
+	int depth = 8;
 	Rasterer2d rast(depth);
 	for( int i = 0; i < 6; i++ ) {
    		rast.rasterize(x[i], y[i], x[(i+1)%6], y[(i+1)%6]);
@@ -442,6 +442,7 @@ TEST(RasterizeTest, DISABLE_Hexagon) {
 		t2ps.write(rast,name);
 	}
 }
+
 
 int main(int argc, char **argv ) {
 ::testing::InitGoogleTest(&argc, argv);

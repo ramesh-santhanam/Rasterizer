@@ -171,18 +171,22 @@ Rasterer2d::_rasterize(QuadNode* node, double x0, double y0, double x1, double y
        	coeff[2] += evalC11(px, py, qx, qy, quad);
     };
 
-    auto swap = [] (double &t0, double &t1) {
-    	if( t0 > t1 ) {
-        	double t = t1;
-           	t1 = t0;
-           	t0 = t;
-       	}
-       	assert(t1 >= t0);
-    };
-
 	auto interpolate = [] (double px, double qx, double t ) -> double {
 		return px + t * (qx - px );
 	};
+
+    auto dist2 = [&] (double x0,double y0,double x1,double y1,double t)->double {
+		double x = interpolate(x0,x1,t);
+		double y = interpolate(y0,y1,t);
+		return (x-x0)*(x-x0) + (y-y0)*(y-y0);
+    };
+
+    auto swap = [] (double &t0, double &t1) {
+	double t = t0;
+	t0 = t1;	
+        t1 = t;
+    };
+
 
 	node->setLevel(level);
 	if( level == m_depth-1 )
@@ -217,6 +221,10 @@ Rasterer2d::_rasterize(QuadNode* node, double x0, double y0, double x1, double y
 
                	rx[1] = 0.5;
                	ry[1] = ry[0];
+				
+				// 0-th bit changes.			
+				int mcode = code0;	
+				mcode ^= (1<<0);
 
                	xform( x0, y0, code0 );
                	xform( rx[0], ry[0], code0 );
@@ -226,7 +234,8 @@ Rasterer2d::_rasterize(QuadNode* node, double x0, double y0, double x1, double y
 					QuadNode* c = getChild(node, code0);
 					_rasterize( c, x0, y0, rx[0], ry[0], level+1);
 				}
-                xform( x1, y1, code1 );
+				assert(mcode == code1);	
+                xform( x1, y1, mcode );
                 xform( rx[1], ry[1], code1 );
                 evalCoefficients( node->m_haar, rx[1], ry[1], x1, y1, code1 );
 				node->setSubQuadEdge(code1);
@@ -245,6 +254,10 @@ Rasterer2d::_rasterize(QuadNode* node, double x0, double y0, double x1, double y
                	ry[0] = 0.5;
                	rx[1] = rx[0];
                	ry[1] = ry[0];
+
+				int mcode = code0;	
+				mcode ^= (1<<1);
+
                	xform( x0, y0, code0);
                	xform( rx[0], ry[0], code0);
                 evalCoefficients( node->m_haar, x0, y0, rx[0], ry[0], code0 );
@@ -253,9 +266,9 @@ Rasterer2d::_rasterize(QuadNode* node, double x0, double y0, double x1, double y
 					QuadNode* c = getChild(node, code0);
 					_rasterize( c, x0, y0, rx[0], ry[0], level+1);
 				}
-
+				assert(mcode == code1);
                 xform( x1, y1, code1);
-                xform( rx[1], ry[1], code1);
+                xform( rx[1], ry[1], mcode);
                 evalCoefficients( node->m_haar, rx[1], ry[1], x1, y1, code1 );
 				node->setSubQuadEdge(code1);
 				if( level != m_depth-1 ) {
@@ -274,8 +287,27 @@ Rasterer2d::_rasterize(QuadNode* node, double x0, double y0, double x1, double y
             double t0 = (0.5 - x0 )/ (x1 - x0);
             // split in y.
             double t1 = (0.5 - y0 )/ (y1 - y0);
+		
+			double d0 = dist2(x0,y0,x1,y1,t0);
+			double d1 = dist2(x0,y0,x1,y1,t1);
+			bool isswap = false;
+			if( d0 > d1 ) {
+				swap(t0, t1);
+				isswap = true;
+			}
 
-            swap(t0, t1);
+			int mode0 = code0; 
+			int mode1;
+			if( !isswap ) {
+				mode0 ^= (1<<0);
+				mode1 = mode0;
+				mode1 ^= (1<<1);
+			} else {
+				mode0 ^= (1<<1);
+				mode1 = mode0;
+				mode1 ^= (1<<0);
+			}
+				
             rx[0] = interpolate( x0, x1, t0 );
             ry[0] = interpolate( y0, y1, t0 );
             rx[1] = rx[0];
@@ -295,7 +327,8 @@ Rasterer2d::_rasterize(QuadNode* node, double x0, double y0, double x1, double y
 				_rasterize( c, x0, y0, rx[0], ry[0], level+1);
 			}	
  			if( t1 > t0 ) {
-                unsigned int code = pointCode(rx[1], ry[1]);
+                //unsigned int code = pointCode(rx[1], ry[1]);
+                unsigned int code = mode0;
                 xform( rx[1], ry[1], code);
                 xform( rx[2], ry[2], code);
                 evalCoefficients( node->m_haar, rx[1], ry[1], rx[2], ry[2], code );
@@ -305,7 +338,8 @@ Rasterer2d::_rasterize(QuadNode* node, double x0, double y0, double x1, double y
 					_rasterize( c, rx[1], ry[1], rx[2], ry[2], level+1);
 				}	
             }
-            xform( rx[3], ry[3], code1);
+			assert(mode1 == code1);
+            xform( rx[3], ry[3], mode1);
             xform( x1, y1, code1);
             evalCoefficients( node->m_haar, rx[3], ry[3], x1, y1, code1 );		
 			node->setSubQuadEdge(code1);
@@ -419,6 +453,6 @@ Rasterer2d::toPostscript(const std::vector<std::vector<double>>& img, const std:
 			int gv = (1 - val ) * 255;	
 			ss << std::setw(2) << std::setfill('0') << gv;
 		}
-		cout << ss.str().c_str() << "\n";
+		//cout << ss.str().c_str() << "\n";
 	}
 }
