@@ -453,6 +453,6 @@ Rasterer2d::toPostscript(const std::vector<std::vector<double>>& img, const std:
 			int gv = (1 - val ) * 255;	
 			ss << std::setw(2) << std::setfill('0') << gv;
 		}
-		//cout << ss.str().c_str() << "\n";
+		cout << ss.str().c_str() << "\n";
 	}
 }

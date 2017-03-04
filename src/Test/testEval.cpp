@@ -303,7 +303,7 @@ TEST(RasterizeTest, square) {
 	x[2] = 1.0; y[2] = 1.;
 	x[3] = 0.0; y[3] = 1.;
 
-	int depth = 6;
+	int depth = 4;
 	Rasterer2d rast(depth);
 	for( int i = 0; i < 4; i++ ) {
    		rast.rasterize(x[i], y[i], x[(i+1)%4], y[(i+1)%4]);
@@ -403,7 +403,9 @@ TEST(RasterizeTest, TriangleRT) {
 	for( int i = 0; i < 3; i++ ) {
    		rast.rasterize(x[i], y[i], x[(i+1)%3], y[(i+1)%3]);
 	}
-
+	std::vector<std::vector<double>> img;
+	rast.render(img);
+	rast.toPostscript(img, "triangleRT.ps");
 	{
 		std::string name("triangleRTQ.ps");
 		Tree2PS t2ps;
@@ -423,7 +425,7 @@ TEST(RasterizeTest, Hexagon) {
 	x[4] = 0.25; y[4] = 1.0;
 	x[5] = 0.0; y[5] = 0.5;
 
-	int depth = 8;
+	int depth = 4;
 	Rasterer2d rast(depth);
 	for( int i = 0; i < 6; i++ ) {
    		rast.rasterize(x[i], y[i], x[(i+1)%6], y[(i+1)%6]);
