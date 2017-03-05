@@ -6,6 +6,7 @@
 #include <iostream>
 #include <cmath>
 #include <iomanip>
+#include <fstream>
 #include <sstream>
 #include <vector>
 #include <string>
@@ -443,6 +444,21 @@ Rasterer2d::toPostscript(const std::vector<std::vector<double>>& img, const std:
 		return v;
 	};
 
+	std::ofstream file;
+	file.open(name.c_str());	
+
+	// scaling of 1 point in PS
+	int sx = 26;
+	int sy = 34;
+
+	file << "%!PS-Adobe " << std::endl;
+	file << "gsave " << std::endl;
+	file << sx << " " << sy << " scale " << std::endl;	
+	file << nr << " " << nc << " " << 8 <<\
+		 " [" << nr << " " << 0 << " "\
+		 << 0 << " " << -nr << " " << 0\
+		 << " " << nc << " ]" <<  std::endl;
+	file << "{< " << std::endl;
 	for( int r = 0; r < nr; r++ ) {
 		assert(img[r].size() == nc );
 		std::stringstream ss;
@@ -453,6 +469,11 @@ Rasterer2d::toPostscript(const std::vector<std::vector<double>>& img, const std:
 			int gv = (1 - val ) * 255;	
 			ss << std::setw(2) << std::setfill('0') << gv;
 		}
-		cout << ss.str().c_str() << "\n";
+		file << ss.str().c_str() << std::endl;
 	}
+	file << ">} " << std::endl;
+        file << "image " <<  std::endl;
+	file << "grestore " << std::endl;
+	file << "showpage " << std::endl;	
+	file.close();
 }

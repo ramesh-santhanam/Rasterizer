@@ -337,7 +337,7 @@ TEST(RasterizeTest, Letter_L) {
 	x[4] = 0.25; y[4] = 1.0;
 	x[5] = 0.0; y[5] = 1.0;
 
-	int depth = 4;
+	int depth = 5;
 	Rasterer2d rast(depth);
 	for( int i = 0; i < 6; i++ ) {
    		rast.rasterize(x[i], y[i], x[(i+1)%6], y[(i+1)%6]);
@@ -352,7 +352,7 @@ TEST(RasterizeTest, Letter_L) {
 			if( i < 2 ) EXPECT_FLOAT_EQ(img[i][j], 1.0);
 		}
 	}
-	rast.toPostscript(img, "letterL");
+	rast.toPostscript(img, "letterL.ps");
 	{
 		std::string name("letterLQ.ps");
 		Tree2PS t2ps;
@@ -369,7 +369,7 @@ TEST(RasterizeTest, Triangle) {
 	x[1] = 0.25; y[1] = 1.;
 	x[2] = 0.5; y[2] = 0.0;
 
-	int depth = 4;
+	int depth = 5;
 	Rasterer2d rast(depth);
 	for( int i = 0; i < 3; i++ ) {
    		rast.rasterize(x[i], y[i], x[(i+1)%3], y[(i+1)%3]);
@@ -398,7 +398,7 @@ TEST(RasterizeTest, TriangleRT) {
 	x[1] = 1.0; y[1] = 0.;
 	x[2] = 0.0; y[2] = 1.0;
 
-	int depth = 4;
+	int depth = 7;
 	Rasterer2d rast(depth);
 	for( int i = 0; i < 3; i++ ) {
    		rast.rasterize(x[i], y[i], x[(i+1)%3], y[(i+1)%3]);
@@ -425,7 +425,7 @@ TEST(RasterizeTest, Hexagon) {
 	x[4] = 0.25; y[4] = 1.0;
 	x[5] = 0.0; y[5] = 0.5;
 
-	int depth = 4;
+	int depth = 6;
 	Rasterer2d rast(depth);
 	for( int i = 0; i < 6; i++ ) {
    		rast.rasterize(x[i], y[i], x[(i+1)%6], y[(i+1)%6]);
@@ -437,7 +437,7 @@ TEST(RasterizeTest, Hexagon) {
 	for( int i = 0; i < img.size(); i++ ) {
 		EXPECT_FLOAT_EQ(img[i].size(), exp2(depth));
 	}
-	rast.toPostscript(img, "Hexagon");
+	rast.toPostscript(img, "Hexagon.ps");
 	{
 		std::string name("hexagonQ.ps");
 		Tree2PS t2ps;

@@ -34,13 +34,13 @@ class ExportPS {
 
 	public:
 	std::ofstream m_file;
-	int m_w;
-	int m_h;
+	double m_w;
+	double m_h;
 
 	double m_ox;
 	double m_oy;
-	double m_sx;
-	double m_sy;
+	double m_hx;
+	double m_hy;
 };
 
 ExportPS::ExportPS(std::string& name)
@@ -48,14 +48,18 @@ ExportPS::ExportPS(std::string& name)
 	m_file.open(name.c_str());
 	assert(m_file.is_open());
 
-	m_w = 595;
-	m_h = 842;
+	double pw = 8.5;
+	double ph = 11.0;
+	
+	m_w = 8; // width in inches A4 size
+	m_h = 8; // ht in inches.
 
-	m_ox = 0.25*m_w;	
-	m_oy = 0.25*m_h;	
+	m_ox = 0.5 * pw;
+	m_oy = 0.5 * ph; 
 
-	m_sx = 0.5*m_w;
-	m_sy = 0.5*m_h;	
+	m_hx = 0.5*m_w;
+	m_hy = 0.5*m_h;	
+
 	if( m_file.is_open() ) {
 
 		m_file << "%!PS-Adobe " << '\n'
@@ -63,34 +67,16 @@ ExportPS::ExportPS(std::string& name)
 
 		m_file << "/m {moveto} bind def"      << std::endl
          << "/l {lineto} bind def"      << std::endl
-         << "/s {setrgbcolor} bind def" << std::endl
          << "/sg {setgray} bind def"    << std::endl
          << "/slw {setlinewidth} bind def" << std::endl
-         << "/sls {setlinestyle} bind def" << std::endl
          << "/gs {gsave} bind def"      << std::endl
-         << "/gr {grestore} bind def"   << std::endl
-         << "/pf {lineto closepath gsave 0.9 setgray fill grestore 1.1 setlinewidth 0.25 setgray stroke} bind def" << std::endl
-		 << "/lx {lineto closepath stroke} bind def" << std::endl
-         << "/lf {lineto closepath fill} bind def"   << std::endl
-         << "/ci2 { 2 0 360 arc closepath stroke } bind def" << std::endl
-         << "/cif2 { 2 0 360 arc closepath fill } bind def" << std::endl;
-
+         << "/gr {grestore} bind def"   << std::endl;
 		m_file << "%%EndProlog" << '\n';
 
 
-		// draw box.
-		double ox = 0.25*m_w;
-		double oy = 0.25*m_h;
-		double sx = 0.5 * m_w;
-		double sy = 0.5 * m_h;
-		m_file << ox-5 << " " << oy-5;
-    	m_file << " m " ;
-    	m_file << ox+sx+5 << " " << oy-5;
-    	m_file << " l " ;
-    	m_file << ox+sx+5 << " " << oy+sy+5;
-    	m_file << " l " ;
-    	m_file << ox-5 << " " << oy+sy+5;
-    	m_file << " lx " << '\n';
+		m_file << " 72 72 scale " << endl;
+		m_file << m_ox << " " << m_oy << " translate" << endl;
+ 		m_file << "0.5 72 div " << "slw" << endl;	
 	}
 }
 
@@ -108,8 +94,8 @@ ExportPS::write(const MultiLine& lines, int kind)
 
 
 	auto xform = [&] (double& x, double &y) {
-		x = m_ox + x * m_sx;
-		y = m_oy + y * m_sy;
+		x = -m_hx + x * m_w;
+		y = -m_hy + y * m_h;
 	};
 	auto writeLine = [&] (double x1, double y1, double x2, double y2 ) {
 		xform(x1, y1);
@@ -120,7 +106,13 @@ ExportPS::write(const MultiLine& lines, int kind)
 	};
 	// write lines. - x = const.
 	m_file << "%const grid lines" << std::endl;
-	m_file << "0.45" << " slw " << std::endl;
+	if( kind == 0 ) {
+		m_file << "% X = const grid lines" << std::endl;
+ 		m_file << "0.5 72 div " << "slw" << endl;	
+	} else {
+		m_file << "% Y = const grid lines" << std::endl;
+ 		m_file << "0.25 72 div " << "slw" << endl;	
+	}
 
 	for( auto s = lines.begin(); s != lines.end(); s++ ) {
 		double v = s->first;
@@ -139,8 +131,6 @@ ExportPS::write(const MultiLine& lines, int kind)
 
 		}
 	}
-	cout << "+++" << endl; 
-
 	return true;
 }
 
