@@ -317,7 +317,7 @@ TEST(RasterizeTest, square) {
 		for( int j = 0; j <  img[i].size(); j++ )
 			EXPECT_FLOAT_EQ(img[i][j], 1.0);
 	}
-	rast.toPostscript(img, "square");
+	rast.toPostscript(img, "square.ps");
 	{
 		std::string name("squareQ.ps");
 		Tree2PS t2ps;

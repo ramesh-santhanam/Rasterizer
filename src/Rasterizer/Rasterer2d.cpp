@@ -451,13 +451,17 @@ Rasterer2d::toPostscript(const std::vector<std::vector<double>>& img, const std:
 	int sx = 26;
 	int sy = 34;
 
+	double x = 0.5 * 8.5;
+	double y = 0.5 * 11.0;
 	file << "%!PS-Adobe " << std::endl;
+	file << "72 72 scale " << std::endl;
+	file << x-4  << " " << y-4 << " translate " << std::endl;
+	file << "8 8 scale " << std::endl;
 	file << "gsave " << std::endl;
-	file << sx << " " << sy << " scale " << std::endl;	
 	file << nr << " " << nc << " " << 8 <<\
 		 " [" << nr << " " << 0 << " "\
-		 << 0 << " " << -nr << " " << 0\
-		 << " " << nc << " ]" <<  std::endl;
+		 << 0 << " " << nc << " " << 0\
+		 << " " << 0 << " ]" <<  std::endl;
 	file << "{< " << std::endl;
 	for( int r = 0; r < nr; r++ ) {
 		assert(img[r].size() == nc );
