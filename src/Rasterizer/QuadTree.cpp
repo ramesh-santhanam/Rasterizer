@@ -1,7 +1,7 @@
 #include "QuadTree.h"
 #include <cstddef>
 #include <assert.h>
-
+#include <deque>
 QuadTree::QuadTree()
 {
 	m_haar00 = 0;
@@ -140,7 +140,7 @@ QuadNode::subQuadEdge(int q) const
 	return m_hasEdge&0x04;
 }
 
-// Tree traverse.
+// Tree traverse. bfs
 void visitTree(
 	QuadNode* node,
         std::function<void (QuadNode*)> nodeFunc )
@@ -148,18 +148,18 @@ void visitTree(
 	assert(node);
 	assert(node->getParent() == nullptr);
 
-	std::vector<QuadNode*> nodes;
+	std::deque<QuadNode*> nodes;
 	nodes.push_back(node);
 	do {
-		QuadNode* ln  = nodes.back();
+		QuadNode* ln  = nodes.front();
 		nodeFunc( ln );
-		nodes.pop_back();
+		nodes.pop_front();
 		for( int i  = 0; i < 4; i++ ) {
 			const QuadNode* c = ln->getSubQuad(i);
 			if( ! c ) continue;
 			nodes.push_back(const_cast<QuadNode*>(c));	
 		}
-	} while( nodes.size() );
+	} while( !nodes.empty() );
 }
 
 
