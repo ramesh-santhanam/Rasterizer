@@ -69,6 +69,31 @@ equivalent(double x, double y, double tol = 1.0e-05 )
         return fabs(x-y) < tol;
 }
 
+void makeStar( float cx, float cy,
+	std::vector<double>& px,
+	std::vector<double>& py,
+	double r1, double r2,
+	int n)
+{
+	px.resize(n);
+	py.resize(n);
+
+	float r;
+	double ang = 0.0;
+	double inc = 2*M_PI/n;
+
+   	for( int i = 0; i < n; i++ ) {
+       	if( i % 2 == 0 )
+       		r = r1;
+       	else
+       		r = r2;
+       	px[i] = cx + r * cos(ang);
+        py[i] = cy + r * sin(ang);
+        ang = ang + inc;
+	}
+	
+}
+
 TEST(HaarLinearTest, Quad0) {
 
 	float cval[3];
@@ -471,27 +496,13 @@ TEST(RasterizeTest, Shape) {
 TEST(RasterizeTest, Star) {
     
     int n = 50;
-    float x[n], y[n];
-    
-    double inc = 2*M_PI/n;
-    
-    
-    float r, r1, r2;
-    
-    r1 = 0.2;
-    r2 = 0.5;
-    float ang = 0.0;
-    for( int i = 0; i < n; i++ ) {
-        if( i % 2 == 0 )
-            r = r1;
-        else
-            r = r2;
-        x[i] = 0.5 + r * cos(ang);
-        y[i] = 0.5 + r * sin(ang);
-        ang = ang + inc;
-    }
-    
-    int depth = 7;
+    std::vector <double> x, y;
+
+	float r1 = 0.47;
+	float r2 = 0.1;
+   
+	makeStar( 0.5, 0.5, x, y, r1, r2, n );  
+    int depth = 8;
     Rasterer2d rast(depth);
     for( int i = 0; i < n; i++ ) {
         rast.rasterize(x[i], y[i], x[(i+1)%n], y[(i+1)%n]);
@@ -505,6 +516,7 @@ TEST(RasterizeTest, Star) {
         t2ps.write(rast,name);
     }
 }
+
 TEST(RasterizeTest, Hexagon) {
 
 	float x[6];
@@ -639,30 +651,39 @@ TEST(RasterizeTest, Shape3) {
     for( int i = 0; i < 4; i++ )
         rast.rasterize(x[i],y[i],x[(i+1)%4], y[(i+1)%4]);
 
-	// inscribe star.
+	// inner
 	{
-    	int n = 50;
-    	float x[n], y[n];
-    
-    	double inc = 2*M_PI/n;
-    	float r, r1, r2;
-    
-    	r1 = 0.10;
-    	r2 = 0.45;
-    	float ang = 0.0;
-    	for( int i = 0; i < n; i++ ) {
-       		if( i % 2 == 0 )
-           		r = r1;
-        	else
-            	r = r2;
-        	x[i] = 0.5 + r * cos(ang);
-        	y[i] = 0.5 + r * sin(ang);
-        	ang = ang + inc;
-
-		}
+		std::vector<double> px, py;
+		double r1 = 0.2;
+		double r2 = 0.05;	
+		int n = 50;
+		makeStar( 0.25, 0.25,px, py, r1, r2, 50);
 		for(int i = 0; i < n; i++ ) 
-        	rast.rasterize( x[(i+1)%n], y[(i+1)%n],x[i], y[i]);
+        	rast.rasterize( px[(i+1)%n], py[(i+1)%n],px[i], py[i]);
 	}
+
+	// inner
+	{
+		std::vector<double> px, py;
+		double r1 = 0.22;
+		double r2 = 0.15;	
+		int n = 30;
+		makeStar( 0.75, 0.75,px, py, r1, r2, n);
+		for(int i = 0; i < n; i++ ) 
+        	rast.rasterize( px[(i+1)%n], py[(i+1)%n],px[i], py[i]);
+	}
+
+	{
+		int n = 3;
+   		x[0] = 0.6; y[0] = 0.1;
+   		x[1] = 0.75; y[1] = 0.4;
+   		x[2] = 0.9; y[2] = 0.1;
+		for(int i = 0; i < n; i++ ) 
+        	rast.rasterize( x[i], y[i], x[(i+1)%n], y[(i+1)%n] );
+
+	}
+
+
     std::vector<std::vector<double>> img;
     rast.render(img);
     rast.toPostscript(img, "shape3.ps");
