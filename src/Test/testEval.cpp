@@ -117,11 +117,6 @@ TEST(HaarLinearTest, Quad1) {
 	EXPECT_FLOAT_EQ(rast.m_root->m_haar[0], cval[0]);
 	EXPECT_FLOAT_EQ(rast.m_root->m_haar[1], cval[1]);
 	EXPECT_FLOAT_EQ(rast.m_root->m_haar[2], cval[2]);
-#if 1
-    std::cout << "Haar0 (T1:Q1):" << rast.m_root->m_haar[0] << "," << cval[0] << "\n";
-    std::cout << "Haar1 (T1:Q1):" << rast.m_root->m_haar[1] << "," << cval[1] << "\n";
-    std::cout << "Haar2 (T1:Q1):" << rast.m_root->m_haar[2] << "," << cval[2] << "\n";
-#endif
 }
 
 TEST(HaarLinearTest, Quad2) {
@@ -146,11 +141,6 @@ TEST(HaarLinearTest, Quad2) {
 	EXPECT_FLOAT_EQ(rast.m_root->m_haar[1], cval[1]);
 	EXPECT_FLOAT_EQ(rast.m_root->m_haar[2], cval[2]);
 
-#if 1
-    std::cout << "Haar0 (T1:Q1):" << rast.m_root->m_haar[0] << "," << cval[0] << "\n";
-    std::cout << "Haar1 (T1:Q1):" << rast.m_root->m_haar[1] << "," << cval[1] << "\n";
-    std::cout << "Haar2 (T1:Q1):" << rast.m_root->m_haar[2] << "," << cval[2] << "\n";
-#endif
 }
 
 TEST(HaarLinearTest, Quad3) {
@@ -174,12 +164,6 @@ TEST(HaarLinearTest, Quad3) {
 	EXPECT_FLOAT_EQ(rast.m_root->m_haar[0], cval[0]);
 	EXPECT_FLOAT_EQ(rast.m_root->m_haar[1], cval[1]);
 	EXPECT_FLOAT_EQ(rast.m_root->m_haar[2], cval[2]);
-
-#if 1
-    std::cout << "Haar0 (T1:Q1):" << rast.m_root->m_haar[0] << "," << cval[0] << "\n";
-    std::cout << "Haar1 (T1:Q1):" << rast.m_root->m_haar[1] << "," << cval[1] << "\n";
-    std::cout << "Haar2 (T1:Q1):" << rast.m_root->m_haar[2] << "," << cval[2] << "\n";
-#endif
 }
 
 
@@ -213,188 +197,6 @@ TEST(HaarLinearTest, Quad01) {
     cout << "Haar2 (T1:Q1):" << rast.m_root->m_haar[2] << "," << cval[2] << "\n";
 #endif
 }
-
-TEST(HaarHL_C10_C11_Test, QuadC10C11_0123)
-{
-    float px[2];
-    float py[2];
-    
-    float cval[3];
-    cval[0] = cval[1] = cval[2] = 0.;
-    
-    px[0] = 0.0; py[0] = 0.25;
-    px[1] = 0.25; py[1] = 0.25;
-    
-    {
-        cval[0] = cval[1] = cval[2] = 0.;
-        Rasterer2d rast(1);
-        rast.rasterize(px[0], py[0], px[1], py[1]);
-        EXPECT_FLOAT_EQ(rast.m_root->m_haar[0], 0.0);
-        EXPECT_FLOAT_EQ(rast.m_root->m_haar[2], 0.0);
-        std::cout << "Haar0 (Q0):" << rast.m_root->m_haar[0] << "," << rast.m_root->m_haar[2] << "\n";
-    }
-    
-    px[0] = 0.6; py[0] = 0.25;
-    px[1] = 0.85; py[1] = 0.25;
-    {
-        cval[0] = cval[1] = cval[2] = 0.;
-        Rasterer2d rast(1);
-        rast.rasterize(px[0], py[0], px[1], py[1]);
-        EXPECT_FLOAT_EQ(rast.m_root->m_haar[0], 0.0);
-        EXPECT_FLOAT_EQ(rast.m_root->m_haar[2], 0.0);
-        std::cout << "Haar0 (Q1):" << rast.m_root->m_haar[0] << "," << rast.m_root->m_haar[2] << "\n";
-    }
-    
-    px[0] = 0.6; py[0] = .75;
-    px[1] = 0.85; py[1] = 0.75;
-    {
-        cval[0] = cval[1] = cval[2] = 0.;
-        Rasterer2d rast(1);
-        rast.rasterize(px[0], py[0], px[1], py[1]);
-        EXPECT_FLOAT_EQ(rast.m_root->m_haar[0], 0.0);
-        EXPECT_FLOAT_EQ(rast.m_root->m_haar[2], 0.0);
-        std::cout << "Haar0 (Q3):" << rast.m_root->m_haar[0] << "," << rast.m_root->m_haar[2] << "\n";
-    }
-
-    px[0] = 0.26; py[0] = .75;
-    px[1] = 0.45; py[1] = 0.75;
-    {
-        cval[0] = cval[1] = cval[2] = 0.;
-        Rasterer2d rast(1);
-        rast.rasterize(px[0], py[0], px[1], py[1]);
-        EXPECT_FLOAT_EQ(rast.m_root->m_haar[0], 0.0);
-        EXPECT_FLOAT_EQ(rast.m_root->m_haar[2], 0.0);
-        std::cout << "Haar0 (Q2):" << rast.m_root->m_haar[0] << "," << rast.m_root->m_haar[2] << "\n";
-    }
-    
-    px[0] = 1.0; py[0] = 0.0;
-    px[1] = 1.0; py[1] = 0.4;
-    {
-        cval[0] = cval[1] = cval[2] = 0.;
-        Rasterer2d rast(1);
-        rast.rasterize(px[0], py[0], px[1], py[1]);
-        EXPECT_FLOAT_EQ(rast.m_root->m_haar[0], 0.0);
-        EXPECT_FLOAT_EQ(rast.m_root->m_haar[2], 0.0);
-        std::cout << "Haar0 (Q2):" << rast.m_root->m_haar[0] << "," << rast.m_root->m_haar[2] << "\n";
-    }}
-
-TEST(HaarVL_C01_Test, QuadC01_0123)
-{
-    
-    
-    //x[3] = 0.45; y[3] = 0.25;
-    //x[4] = 0.25; y[4] = 1.0;
-    //x[5] = 0.0; y[5] = 1.0; // 0.091
-    
-    float px[2];
-    float py[2];
-    
-    float cval[3];
-    cval[0] = cval[1] = cval[2] = 0.;
-    
-    {
-        float v[4];
-        v[0] = 2*0.0; v[1] = 0.0;
-        v[2] = 2*0.5; v[3] = 0.0;
-        calc_coeffs_line(cval, v, 0, 0);
-        std::cout << "coeff: " << cval[0] << "," << cval[1] << "," << cval[2] << "\n";
-    }
-    
-    {
-        float v[4];
-        v[0] = (2*0.5)-1; v[1] = 0.0;
-        v[2] = (2*1.0)-1; v[3] = 0.0;
-        calc_coeffs_line(cval, v, 1, 0);
-        std::cout << "coeff: " << cval[0] << "," << cval[1] << "," << cval[2] << "\n";
-        
-        Rasterer2d rast(1);
-        rast.rasterize(.5, 0.0, 1.0, 0.);
-        std::cout << "Haar0 (Q0):" << rast.m_root->m_haar[0] << "," << rast.m_root->m_haar[1] << "," << rast.m_root->m_haar[2] << "\n";
-    }
-    
-    {
-        float v[4];
-        v[0] = (2*1.0)-1; v[1] = 0.0;
-        v[2] = (2*1.0)-1; v[3] = 2*0.35;
-        calc_coeffs_line(cval, v, 1, 0);
-        std::cout << "coeff: " << cval[0] << "," << cval[1] << "," << cval[2] << "\n";
-        
-        Rasterer2d rast(1);
-        rast.rasterize(1.0, 0.0, 1.0, 0.35);
-        std::cout << "Haar0 (Q0):" << rast.m_root->m_haar[0] << "," << rast.m_root->m_haar[1] << "," << rast.m_root->m_haar[2] << "\n";
-    }
-    
-    {
-        float v[4];
-        v[0] = (2*1.0)-1; v[1] = 2*0.35;
-        v[2] = (2*0.5)-1; v[3] = 2*0.2591;
-        calc_coeffs_line(cval, v, 1, 0);
-        std::cout << "coeff: " << cval[0] << "," << cval[1] << "," << cval[2] << "\n";
-        
-        Rasterer2d rast(1);
-        rast.rasterize(1.0, 0.35, 0.5, 0.2591);
-        std::cout << "Haar0 (Q0):" << rast.m_root->m_haar[0] << "," << rast.m_root->m_haar[1] << "," << rast.m_root->m_haar[2] << "\n";
-        
-    }
-    
-    {
-        float v[4];
-        
-        v[0] = 2*0.5; v[1] = 2*0.2591;
-        v[2] = 2*0.45; v[3] = 2*0.25;
-        calc_coeffs_line(cval, v, 0, 0);
-        std::cout << "coeff: " << cval[0] << "," << cval[1] << "," << cval[2] << "\n";
-    }
-    
-    {
-        float v[4];
-        
-        v[0] = 2*0.45; v[1] = 2*0.25;
-        v[2] = 2*0.3833; v[3] = 2*0.5;
-        calc_coeffs_line(cval, v, 0, 0);
-        std::cout << "coeff: " << cval[0] << "," << cval[1] << "," << cval[2] << "\n";
-    }
-    
-    {
-        float v[4];
-        
-        v[0] = 2*0.3833; v[1] = (2*0.5)-1;
-        v[2] = 2*0.25; v[3] = (2*1.0)-1;
-        calc_coeffs_line(cval, v, 0, 1);
-        std::cout << "coeff: " << cval[0] << "," << cval[1] << "," << cval[2] << "\n";
-    }
-    
-    {
-        float v[4];
-        
-        v[0] = 2*0.25; v[1] = 2*1.0-1;
-        v[2] = 0.0; v[3] = (2*1.0)-1;
-        calc_coeffs_line(cval, v, 0, 1);
-        std::cout << "coeff: " << cval[0] << "," << cval[1] << "," << cval[2] << "\n";
-    }
-
-    
-    {
-        float v[4];
-        
-        v[0] = 0.0; v[1] = 2*1.0-1;
-        v[2] = 0.0; v[3] = 2*0.5-1;
-        calc_coeffs_line(cval, v, 0, 1);
-        std::cout << "coeff: " << cval[0] << "," << cval[1] << "," << cval[2] << "\n";
-    }
-    
-    {
-        float v[4];
-        
-        v[0] = 0.0; v[1] = 2*0.5;
-        v[2] = 0.0; v[3] = 0.0;
-        calc_coeffs_line(cval, v, 0, 0);
-        std::cout << "coeff: " << cval[0] << "," << cval[1] << "," << cval[2] << "\n";
-    }
-    
-    
-}
-
 
 TEST(HaarLinearTest, Quad13) {
 
@@ -507,6 +309,38 @@ TEST(RasterizeTest, square) {
 	}
 }
 
+TEST(CheckTest, checkL )
+{
+
+	float x[6], y[6];
+
+	x[0] = 0.0; y[0] = 0.0;
+	x[1] = 1.0; y[1] = 0.0;
+	x[2] = 1.0; y[2] = 0.25;
+	x[3] = 0.45; y[3] = 0.25;
+	x[4] = 0.45; y[4] = 1.0;
+	x[5] = 0.00; y[5] = 1.0;
+
+	int depth = 7;
+	Rasterer2d rast(depth);
+   	rast.rasterize(x[0], y[0], x[1], y[1]);
+   	rast.rasterize(x[1], y[1], x[2], y[2]);
+   	rast.rasterize(x[2], y[2], x[3], y[3]);
+   	rast.rasterize(x[3], y[3], x[4], y[4]);
+   	rast.rasterize(x[4], y[4], x[5], y[5]);
+   	rast.rasterize(x[5], y[5], x[0], y[0]);
+
+    std::vector<std::vector<double>> img;
+    rast.render(img);
+
+    rast.toPostscript(img, "LL.ps");
+	{
+		std::string name("LLQ.ps");
+		Tree2PS t2ps;
+		t2ps.write(rast,name);
+	}
+}
+
 TEST(RasterizeTest, Letter_L) {
 
 	float x[6];
@@ -524,17 +358,6 @@ TEST(RasterizeTest, Letter_L) {
 	for( int i = 0; i < 6; i++ ) {
    		rast.rasterize(x[i], y[i], x[(i+1)%6], y[(i+1)%6]);
 	}
-    std::cout << "10" << ":" << rast.m_root->m_haar[0] << ":01:" << rast.m_root->m_haar[1] << ":11:" << rast.m_root->m_haar[2] << "\n";
-   
-	double vv = -1 * rast.m_root->m_haar[0] - rast.m_root->m_haar[1] + rast.m_root->m_haar[2];
-
-	bool isI = rast.m_root->subQuadEdge(3);
-
-    	if( isI ) std::cout << "isI : "<< "true" << std::endl;
-	else 
-		std::cout << "isI : " << "FALSE" << std::endl;
-
-    std::cout << "computed quad4 value: "<< vv << std::endl;
 
     std::vector<std::vector<double>> img;
 	rast.render(img);
@@ -732,7 +555,6 @@ TEST(RasterizeTest, LetterT) {
     for( int i = 0; i < 8; i++ )
         rast.rasterize(x[i],y[i],x[(i+1)%8], y[(i+1)%8]);
 
-    std::cout << "LetterT10" << ":" << rast.m_root->m_haar[0] << ":01:" << rast.m_root->m_haar[1] << ":11:" << rast.m_root->m_haar[2];
     std::vector<std::vector<double>> img;
     rast.render(img);
 
@@ -771,6 +593,84 @@ TEST(RasterizeTest, Shape1) {
         Tree2PS t2ps;
         t2ps.write(rast,name);
     }
+}
+
+TEST(RasterizeTest, Shape2) {
+
+   float x[4], y[4];
+   x[0] = 0.; y[0] = 0.;
+   x[1] = 1.0; y[1] = 0.0;
+   x[2] = 1.0; y[2] = 1.;
+   x[3] = 0.0; y[3] = 1.;
+
+    int depth = 7;
+    Rasterer2d rast(depth);
+    for( int i = 0; i < 4; i++ )
+        rast.rasterize(x[i],y[i],x[(i+1)%4], y[(i+1)%4]);
+
+   x[0] = 0.25; y[0] = 0.25;
+   x[1] = 0.25; y[1] = 0.75;
+   x[2] = 0.75; y[2] = 0.75;
+   x[3] = 0.75; y[3] = 0.25;
+
+   for( int i = 0; i < 4; i++ )
+        rast.rasterize(x[i],y[i],x[(i+1)%4], y[(i+1)%4]);
+
+    std::vector<std::vector<double>> img;
+    rast.render(img);
+    rast.toPostscript(img, "shape2.ps");
+    {
+        std::string name("shape2Q.ps");
+        Tree2PS t2ps;
+        t2ps.write(rast,name);
+    }
+}
+
+TEST(RasterizeTest, Shape3) {
+
+   float x[4], y[4];
+   x[0] = 0.; y[0] = 0.;
+   x[1] = 1.0; y[1] = 0.0;
+   x[2] = 1.0; y[2] = 1.;
+   x[3] = 0.0; y[3] = 1.;
+
+    int depth = 7;
+    Rasterer2d rast(depth);
+    for( int i = 0; i < 4; i++ )
+        rast.rasterize(x[i],y[i],x[(i+1)%4], y[(i+1)%4]);
+
+	// inscribe star.
+	{
+    	int n = 50;
+    	float x[n], y[n];
+    
+    	double inc = 2*M_PI/n;
+    	float r, r1, r2;
+    
+    	r1 = 0.10;
+    	r2 = 0.45;
+    	float ang = 0.0;
+    	for( int i = 0; i < n; i++ ) {
+       		if( i % 2 == 0 )
+           		r = r1;
+        	else
+            	r = r2;
+        	x[i] = 0.5 + r * cos(ang);
+        	y[i] = 0.5 + r * sin(ang);
+        	ang = ang + inc;
+
+		}
+		for(int i = 0; i < n; i++ ) 
+        	rast.rasterize( x[(i+1)%n], y[(i+1)%n],x[i], y[i]);
+	}
+    std::vector<std::vector<double>> img;
+    rast.render(img);
+    rast.toPostscript(img, "shape3.ps");
+    {
+        std::string name("shape3Q.ps");
+        Tree2PS t2ps;
+        t2ps.write(rast,name);
+	}
 }
 
 int main(int argc, char **argv ) {

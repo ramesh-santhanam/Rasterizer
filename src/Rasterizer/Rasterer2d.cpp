@@ -48,7 +48,6 @@ Rasterer2d::render(std::vector<std::vector<double>>& img)
 	int offset_y = 0;
 
 	assert(m_root);
-	cout << "render root:  " << size << "::" <<  m_qtree.m_haar00 <<"\n";
 	writeImage( img, offset_x, offset_y, size,  m_root, m_qtree.m_haar00 );
 }
 
@@ -66,13 +65,9 @@ Rasterer2d::rasterize(double x0, double y0, double x1, double y1)
 	if( m_depth > 0 ) {
 		if( !m_root  ) {
 			m_root = m_qtree.newQuad(nullptr);
-			//cout << "allocated root: %p " << m_root << "\n";
 		}
 		assert(m_root);
 		QuadNode* r = m_root;
-		//cout << "root: %p " << r << "\n";
-
-		//cout << "x0: " << x0 << ":y0:" << y0 << ":x1:" << x1 << ":y1:" << y1 << "\n";
 		_rasterize( r, x0, y0, x1, y1, level );	
 	}
 }
@@ -82,9 +77,7 @@ Rasterer2d::getChild(QuadNode* n, int index)
 {
 	QuadNode* child = n->getSubQuad(index);
 	if( ! child ) {
-		//cout << "%p(%d)" << n << n->m_level << ":" << "child: " << index << ": is nil\n";
 		child = m_qtree.newQuad(n);
-		//cout << "%p(%d)" << n << n->m_level << ":child:" << "(%p)" << child << "n";
 		n->setSubQuad(index, child);
 	}
 	assert(child);
@@ -399,7 +392,7 @@ Rasterer2d::writeImage( std::vector<std::vector<double>>& img,
 			// parent has edge - no child because leaf.
 			if( node->subQuadEdge(q) ) {
 				writeImageBlock( img, ox, oy, half, half, node_value[q] );
-			} else if( val > 0.5 ) {
+			} else if( node_value[q] > 0.5 ) {
 				writeImageBlock( img, ox, oy, half, half, 1.0 );
 			}
 		} else {
