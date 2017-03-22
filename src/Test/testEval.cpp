@@ -1,5 +1,6 @@
 #include <Rasterer2d.h>
 #include <Tree2PS.h>
+#include <WriteTGA.h>
 
 #include "gtest/gtest.h"
 #include <iostream>
@@ -312,7 +313,7 @@ TEST(RasterizeTest, square) {
 	x[2] = 1.0; y[2] = 1.;
 	x[3] = 0.0; y[3] = 1.;
 
-	int depth = 4;
+	int depth = 9;
 	Rasterer2d rast(depth);
 	for( int i = 0; i < 4; i++ ) {
    		rast.rasterize(x[i], y[i], x[(i+1)%4], y[(i+1)%4]);
@@ -326,7 +327,7 @@ TEST(RasterizeTest, square) {
 		for( int j = 0; j <  img[i].size(); j++ )
 			EXPECT_FLOAT_EQ(img[i][j], 1.0);
 	}
-	rast.toPostscript(img, "square.ps");
+	writeTGA(img, "square.tga");
 	{
 		std::string name("squareQ.ps");
 		Tree2PS t2ps;
@@ -346,7 +347,7 @@ TEST(CheckTest, checkL )
 	x[4] = 0.45; y[4] = 1.0;
 	x[5] = 0.00; y[5] = 1.0;
 
-	int depth = 7;
+	int depth = 8;
 	Rasterer2d rast(depth);
    	rast.rasterize(x[0], y[0], x[1], y[1]);
    	rast.rasterize(x[1], y[1], x[2], y[2]);
@@ -358,7 +359,7 @@ TEST(CheckTest, checkL )
     std::vector<std::vector<double>> img;
     rast.render(img);
 
-    rast.toPostscript(img, "LL.ps");
+	writeTGA(img, "LL.tga");
 	{
 		std::string name("LLQ.ps");
 		Tree2PS t2ps;
@@ -393,7 +394,7 @@ TEST(RasterizeTest, Letter_L) {
 			if( i < 2 ) EXPECT_FLOAT_EQ(img[i][j], 1.0);
 		}
 	}
-	rast.toPostscript(img, "letterL.ps");
+	writeTGA(img, "letterL.tga");
 	{
 		std::string name("letterLQ.ps");
 		Tree2PS t2ps;
@@ -502,14 +503,14 @@ TEST(RasterizeTest, Star) {
 	float r2 = 0.1;
    
 	makeStar( 0.5, 0.5, x, y, r1, r2, n );  
-    int depth = 8;
+    int depth = 10;
     Rasterer2d rast(depth);
     for( int i = 0; i < n; i++ ) {
         rast.rasterize(x[i], y[i], x[(i+1)%n], y[(i+1)%n]);
     }
     std::vector<std::vector<double>> img;
     rast.render(img);
-    rast.toPostscript(img, "star.ps");
+	writeTGA(img, "star.tga");
     {
         std::string name("starQ.ps");
         Tree2PS t2ps;
@@ -529,7 +530,7 @@ TEST(RasterizeTest, Hexagon) {
 	x[4] = 0.25; y[4] = 1.0;
 	x[5] = 0.0; y[5] = 0.5;
 
-	int depth = 7;
+	int depth = 8;
 	Rasterer2d rast(depth);
 	for( int i = 0; i < 6; i++ ) {
    		rast.rasterize(x[i], y[i], x[(i+1)%6], y[(i+1)%6]);
@@ -541,7 +542,7 @@ TEST(RasterizeTest, Hexagon) {
 	for( int i = 0; i < img.size(); i++ ) {
 		EXPECT_FLOAT_EQ(img[i].size(), exp2(depth));
 	}
-	rast.toPostscript(img, "Hexagon.ps");
+	writeTGA(img, "hexagon.tga");
 	{
 		std::string name("hexagonQ.ps");
 		Tree2PS t2ps;
@@ -571,6 +572,7 @@ TEST(RasterizeTest, LetterT) {
     rast.render(img);
 
     rast.toPostscript(img, "letterT.ps");
+    writeTGA(img, "letterT.tga");
     {
         std::string name("letterTQ.ps");
         Tree2PS t2ps;
@@ -598,8 +600,8 @@ TEST(RasterizeTest, Shape1) {
     
     std::vector<std::vector<double>> img;
     rast.render(img);
+    writeTGA(img, "shape1.tga");
 
-    rast.toPostscript(img, "shape1.ps");
     {
         std::string name("shape1Q.ps");
         Tree2PS t2ps;
@@ -615,7 +617,7 @@ TEST(RasterizeTest, Shape2) {
    x[2] = 1.0; y[2] = 1.;
    x[3] = 0.0; y[3] = 1.;
 
-    int depth = 7;
+    int depth = 12;
     Rasterer2d rast(depth);
     for( int i = 0; i < 4; i++ )
         rast.rasterize(x[i],y[i],x[(i+1)%4], y[(i+1)%4]);
@@ -630,7 +632,7 @@ TEST(RasterizeTest, Shape2) {
 
     std::vector<std::vector<double>> img;
     rast.render(img);
-    rast.toPostscript(img, "shape2.ps");
+    writeTGA(img, "shape2.tga");
     {
         std::string name("shape2Q.ps");
         Tree2PS t2ps;
@@ -646,7 +648,7 @@ TEST(RasterizeTest, Shape3) {
    x[2] = 1.0; y[2] = 1.;
    x[3] = 0.0; y[3] = 1.;
 
-    int depth = 7;
+    int depth = 12;
     Rasterer2d rast(depth);
     for( int i = 0; i < 4; i++ )
         rast.rasterize(x[i],y[i],x[(i+1)%4], y[(i+1)%4]);
@@ -672,7 +674,6 @@ TEST(RasterizeTest, Shape3) {
 		for(int i = 0; i < n; i++ ) 
         	rast.rasterize( px[(i+1)%n], py[(i+1)%n],px[i], py[i]);
 	}
-
 	{
 		int n = 3;
    		x[0] = 0.6; y[0] = 0.1;
@@ -682,11 +683,49 @@ TEST(RasterizeTest, Shape3) {
         	rast.rasterize( x[i], y[i], x[(i+1)%n], y[(i+1)%n] );
 
 	}
+	{
+		float xx[] = {
+			0.234578,
+			0.242965, 0.246212, 0.25, 0.248377, 0.246212, 0.242154, 0.234578, 0.22592, 0.220238, 0.214015, 0.209145, 0.208063,
+			0.208063, 0.209957, 0.217262, 0.224567, 0.22592, 0.227814, 0.231331, 0.233225, 0.237284, 0.241342, 0.239448, 0.231061,
+			0.223755, 0.215909, 0.209686, 0.195346, 0.186147, 0.182359, 0.176677, 0.170455, 0.166937, 0.161797, 0.158279,
+			0.155574, 0.155032, 0.158279, 0.16369, 0.162608, 0.148268, 0.146104, 0.146104, 0.145833, 0.147727, 0.148268,
+			0.150703, 0.152868, 0.148539, 0.135823, 0.12013, 0.104167, 0.103084, 0.0968615, 0.090368, 0.0873918, 0.0838745,
+			0.08171, 0.0844156, 0.0890152, 0.094697, 0.0979437, 0.092803, 0.084145, 0.0776515, 0.0733225, 0.0676407, 0.0676407,
+			0.0716991, 0.0727814, 0.0662879, 0.0579004, 0.0508658, 0.0446429, 0.0359848, 0.0286797, 0.0286797, 0.0308442, 0.0316558,
+			0.0251623, 0.0205628, 0.0205628, 0.0205628, 0.030303, 0.0373377, 0.0403139, 0.0462662, 0.0573593, 0.0611472, 0.0641234,
+			0.0587121, 0.0443723, 0.021645, 0.00568182, 0.000541126, 0.0105519, 0.0221861, 0.0211039, 0.0183983, 0.0162338, 0.0151515,
+			0.0116342, 0.00730519, 0.00811688, 0.0183983, 0.0419372, 0.0714286, 0.0873918, 0.102543, 0.117695, 0.143669, 0.166937,
+			0.17289, 0.175595, 0.179383, 0.181818, 0.185336, 0.189664, 0.196158, 0.215097, 0.226732, 0.228084, 0.228626, 0.231061,
+			0.233225, 0.234578, 0.234578};
 
+
+		float yy[] = { 0.566306,
+			0.576621, 0.591847, 0.607564, 0.613458, 0.617878, 0.62279, 0.619352, 0.611493, 0.612475, 0.619843, 0.623281,
+			0.630157, 0.648821, 0.666503, 0.694499, 0.716601, 0.722004, 0.729371, 0.733792, 0.73723, 0.73723, 0.742633,
+			0.749509, 0.749509, 0.746071, 0.730354, 0.715619, 0.685658, 0.665521, 0.655697, 0.658153, 0.662574, 0.674361,
+			0.691552, 0.715128, 0.721513, 0.732809, 0.734774, 0.738703, 0.749018, 0.749018, 0.740668, 
+			0.727898, 0.722004, 0.700884, 0.69057, 0.668959, 0.654715, 0.652259, 0.653242, 0.646365,
+			0.634578, 0.639489, 0.660609, 0.679764, 0.688605, 0.697937, 0.709725, 0.731336, 0.737721,
+			0.736248, 0.742141, 0.749018, 0.748035, 0.739195, 0.721513, 0.701866, 0.695481, 0.68222, 0.657662,
+			0.664047, 0.67387, 0.680747, 0.686641, 0.702849, 0.728389, 0.738703, 0.744106, 0.749018, 0.748035,
+			0.742141, 0.734774, 0.727898, 0.687623, 0.666503, 0.663556, 0.65668, 0.627701,
+			0.602652, 0.591356, 0.59332, 0.599705, 0.592829, 0.564833, 0.527505, 0.5, 0.513752,
+			0.528978, 0.534872, 0.529961, 0.518664, 0.515226, 0.527014, 0.546169, 0.570236, 0.582024,
+			0.562868, 0.557466, 0.556974, 0.564342, 0.56778, 0.573183, 0.571218, 0.566798, 0.566306, 0.564342,
+			0.564833, 0.568271, 0.568762, 0.561395, 0.55943, 0.557957, 0.559921, 0.55501, 0.555992, 0.566306, 0.566306};
+
+		int n = 128;
+		for( int i = 0; i < 128; i++ ) {
+        		rast.rasterize( xx[(i+1)%n], yy[(i+1)%n],xx[i], yy[i]);
+		}
+	
+
+	}
 
     std::vector<std::vector<double>> img;
     rast.render(img);
-    rast.toPostscript(img, "shape3.ps");
+    writeTGA(img, "shape3.tga");
     {
         std::string name("shape3Q.ps");
         Tree2PS t2ps;

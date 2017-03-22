@@ -459,12 +459,16 @@ Rasterer2d::toPostscript(const std::vector<std::vector<double>>& img, const std:
 	for( int r = 0; r < nr; r++ ) {
 		assert(img[r].size() == nc );
 		std::stringstream ss;
-  		ss << std::hex;	
+		ss << hex;
 		for( int c = 0; c < nc; c++ ) {
 			float val = img[r][c];
 			val = clamp(val);
-			int gv = (1 - val ) * 255;	
-			ss << std::setw(2) << std::setfill('0') << gv;
+			int gs = int((1.0-val)*255);
+			if( gs < 0 ) gs = 0;
+			else if( gs > 255 )
+				gs = 255;
+			char gv = gs;	
+			ss << std::setw(2) << std::setfill('0') << gs;	
 		}
 		file << ss.str().c_str() << std::endl;
 	}
